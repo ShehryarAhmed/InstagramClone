@@ -9,16 +9,16 @@ import android.view.MenuItem;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-public class MainActivity extends AppCompatActivity {
+public class ShareActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-    public static final int ACTIVITY_NUM = 0;
+    private static final String TAG = "ShareActivity";
+    public static final int ACTIVITY_NUM = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate: run");
-
+        Log.d(TAG, "onCreate: START");
         setUpBottomNavigationView();
     }
     private void setUpBottomNavigationView(){
