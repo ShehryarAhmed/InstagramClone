@@ -7,12 +7,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.tx.instagram.LikesActivity;
+import com.example.tx.instagram.Like.LikeActivity;
 import com.example.tx.instagram.MainActivity;
-import com.example.tx.instagram.ProfileActivity;
+import com.example.tx.instagram.Profile.ProfileActivity;
 import com.example.tx.instagram.R;
-import com.example.tx.instagram.SearchingActivity;
-import com.example.tx.instagram.ShareActivity;
+import com.example.tx.instagram.Search.SearchingActivity;
+import com.example.tx.instagram.Share.ShareActivity;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavigationViewHelper {
@@ -20,6 +20,7 @@ public class BottomNavigationViewHelper {
 
     public static void setUpBottomNavigation(BottomNavigationViewEx bottomNavigation){
         Log.d(TAG, "setUpBottomNavigation: ");
+
         bottomNavigation.enableAnimation(false);
         bottomNavigation.enableItemShiftingMode(false);
         bottomNavigation.enableShiftingMode(false);
@@ -47,7 +48,7 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent3);
                         break;
                     case R.id.ic_alert:
-                        Intent intent4 = new Intent(context, LikesActivity.class);
+                        Intent intent4 = new Intent(context, LikeActivity.class);
                         intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent4);
                         break;

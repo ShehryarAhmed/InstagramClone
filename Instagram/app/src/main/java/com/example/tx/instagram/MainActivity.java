@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     public static final int ACTIVITY_NUM = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,18 +28,19 @@ public class MainActivity extends AppCompatActivity {
         setUpBottomNavigationView();
         setUpViewPager();
     }
-    private void setUpBottomNavigationView(){
+
+    private void setUpBottomNavigationView() {
         Log.d(TAG, "setUpBottomNavigationView: ");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation_bar);
         BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(getApplicationContext(),bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(getApplicationContext(), bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
     }
 
-    private void setUpViewPager(){
+    private void setUpViewPager() {
         SectionPagerAdapter adapter = new SectionPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new CameraFragment());
         adapter.addFragment(new HomeFragment());
