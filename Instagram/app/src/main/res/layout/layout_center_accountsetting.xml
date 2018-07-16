@@ -4,14 +4,21 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:padding="20dp"
-        android:background="@drawable/white_gray_boader_bottom">
+        android:background="@color/white">
         <TextView
+            android:id="@+id/textSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Account Settings"
             android:textSize="35sp"
             android:textColor="@color/black"
-            android:background="@drawable/white_gray_boader_bottom"/>
+            android:background="@drawable/grey_boader_bottom"/>
 
+        <ListView
+            android:id="@+id/lvAccountSetting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textSettings">
+        </ListView>
     </RelativeLayout>
 </merge>

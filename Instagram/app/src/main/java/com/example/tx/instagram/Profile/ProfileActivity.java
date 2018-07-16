@@ -1,11 +1,14 @@
 package com.example.tx.instagram.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 
 import com.example.tx.instagram.R;
@@ -21,6 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Log.d(TAG, "onCreate: started");
+
         setUpBottomNavigationView();
         setupToolbar();
     }
@@ -48,15 +52,23 @@ public class ProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.profile_toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                Log.d(TAG, "onMenuItemClick: click menu item "+item);
+//                switch (item.getItemId()){
+//                    case R.id.profileMenu:
+//                        Log.d(TAG, "onMenuItemClick: Navigating to profile preferences");
+//                }
+//                return false;
+//            }
+//        });
+        ImageView profileMenu = (ImageView) findViewById(R.id.profile_menu);
+        profileMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Log.d(TAG, "onMenuItemClick: click menu item "+item);
-                switch (item.getItemId()){
-                    case R.id.profileMenu:
-                        Log.d(TAG, "onMenuItemClick: Navigating to profile preferences");
-                }
-                return false;
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating too account setting");
+                startActivity(new Intent(getApplicationContext(),AccountSettingActivity.class));
             }
         });
     }
