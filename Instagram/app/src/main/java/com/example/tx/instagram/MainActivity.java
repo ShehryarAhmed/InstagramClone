@@ -12,6 +12,7 @@ import com.example.tx.instagram.Home.CameraFragment;
 import com.example.tx.instagram.Home.HomeFragment;
 import com.example.tx.instagram.Home.MessageFragment;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
+import com.example.tx.instagram.utils.SectionPagerAdapter;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
