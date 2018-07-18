@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:436275939675:android:62a926e68024d92a",
+        "mobilesdk_app_id": "1:436275939675:android:195d0b40fd3cbf75",
         "android_client_info": {
           "package_name": "com.example.tx.instagram"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "436275939675-80ttmoum97kvt1dkuj1vr0017nfm3ret.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tx.instagram",
+            "certificate_hash": "7dd7b8c612eb15b79c0bc704b9c3cc4914a7d997"
+          }
+        },
         {
           "client_id": "436275939675-5f964ahav17fg0hdqo9n2vdbbak8mu84.apps.googleusercontent.com",
           "client_type": 3
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "436275939675-5f964ahav17fg0hdqo9n2vdbbak8mu84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

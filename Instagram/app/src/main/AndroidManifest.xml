@@ -18,9 +18,12 @@
         </activity>
         <activity android:name=".Search.SearchingActivity" />
         <activity android:name=".Like.LikeActivity" />
+        <activity android:name=".Login.LoginActivity" />
+        <activity android:name=".Login.RegisterActivity" />
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".Profile.AccountSettingActivity" />
         <activity android:name=".Share.ShareActivity" />
+
     </application>
 
 </manifest>
