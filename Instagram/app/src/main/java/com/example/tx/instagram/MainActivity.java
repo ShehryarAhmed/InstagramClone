@@ -1,5 +1,6 @@
 package com.example.tx.instagram;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +14,15 @@ import com.example.tx.instagram.Home.HomeFragment;
 import com.example.tx.instagram.Home.MessageFragment;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.example.tx.instagram.utils.SectionPagerAdapter;
+import com.example.tx.instagram.utils.UniversalImageLoader;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     public static final int ACTIVITY_NUM = 0;
+    private Context mContext = MainActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +30,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: run");
 
+        initImageLoader();
         setUpBottomNavigationView();
         setUpViewPager();
+    }
+
+
+    private void initImageLoader(){
+        UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
+        ImageLoader.getInstance().init(universalImageLoader.getConfig());
     }
 
     private void setUpBottomNavigationView() {

@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +16,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.tx.instagram.R;
+import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.example.tx.instagram.utils.SectionStatePagerAdapter;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,8 @@ import java.util.ArrayList;
 public class AccountSettingActivity extends AppCompatActivity {
 
     private static final String TAG = "AccountSettingActivity";
+    public static final int ACTIVITY_NUM = 4;
+
     private Context mContext;
     private ImageView backArrow;
     private SectionStatePagerAdapter pagerAdapter;
@@ -42,6 +48,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         mRelativeLayout = (RelativeLayout) findViewById(R.id.rellayout1);
 
         setUpSettingList();
+        setUpBottomNavigationView();
         setUpFragments();
 
         backArrow = (ImageView) findViewById(R.id.backArraw);
@@ -94,5 +101,15 @@ public class AccountSettingActivity extends AppCompatActivity {
         pagerAdapter = new SectionStatePagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(new EditProfileFragment(), getString(R.string.edit_profile));
         pagerAdapter.addFragment(new SignOutFragment(), getString(R.string.sign_out));
+    }
+    private void setUpBottomNavigationView() {
+        Log.d(TAG, "setUpBottomNavigationView: ");
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation_bar);
+        BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(getApplicationContext(), bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
     }
 }

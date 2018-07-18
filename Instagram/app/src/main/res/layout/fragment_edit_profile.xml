@@ -7,12 +7,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/rellayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <include layout="@layout/snippet_top_editprofiletoolbar"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rellayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rellayout1">
+
+            <include layout="@layout/snippet_centrer_editprofiletoolbar"/>
         </RelativeLayout>
     </RelativeLayout>
 
