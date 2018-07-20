@@ -3,4 +3,9 @@
 
     <string name="edit_profile">Edit Profile</string>
     <string name="sign_out">Sign Out</string>
+    <string name="auth_failed">Authentication failed</string>
+
+    //Firebase database node name
+    <string name="db_user">users</string>
+    <string name="db_user_account_setting">users_account_settings</string>
 </resources>
