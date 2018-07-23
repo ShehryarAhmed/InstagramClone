@@ -81,10 +81,26 @@ public class LoginActivity extends AppCompatActivity {
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    Log.d(TAG, "onComplete: "+task.isSuccessful());
+                                    FirebaseUser user = mAuth.getCurrentUser();
+
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "signInWithEmail:success");
-                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        try{
+                                            if(user.isEmailVerified()){
+                                                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                                            }
+                                            else{
+                                                Toast.makeText(mContext, "Email is not verfied \n check your email inbox", Toast.LENGTH_SHORT).show();
+                                                mProgressBar.setVisibility(View.GONE);
+                                                mPleasWait.setVisibility(View.GONE);
+                                                mAuth.signOut();
+                                            }
+
+                                        }catch (NullPointerException e){
+                                            Log.e(TAG, "onComplete: Nullpointer exception"+e.getMessage() );
+                                        }
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "signInWithEmail:failure", task.getException());

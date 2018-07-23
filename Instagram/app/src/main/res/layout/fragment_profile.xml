@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/rellayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/snippet_top_profilebar"></include>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+        android:id="@+id/rellayout2"
+            android:layout_below="@+id/rellayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <include layout="@layout/layout_center_profile"/>
+
+        </RelativeLayout>
+
+
+            <ProgressBar
+                android:id="@+id/profile_progressBar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100dp"
+                android:visibility="gone"/>
+    <include layout="@layout/layout_bottom_navigation_tabs"/>
+
+</RelativeLayout>
+
+

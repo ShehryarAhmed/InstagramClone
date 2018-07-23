@@ -6,13 +6,6 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <!-- **************top tool bar************ -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/rellayout1">
-    <include layout="@layout/snippet_top_profilebar"></include>
-        </RelativeLayout>
         <!-- **************middle Section************ -->
         <RelativeLayout
             android:layout_width="match_parent"

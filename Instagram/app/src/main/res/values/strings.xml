@@ -8,4 +8,9 @@
     //Firebase database node name
     <string name="db_user">users</string>
     <string name="db_user_account_setting">users_account_settings</string>
+
+    //Fragment name
+    <string name="profile_fragment">Profile_Fragment</string>
+
+
 </resources>

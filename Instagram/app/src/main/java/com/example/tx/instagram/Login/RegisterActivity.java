@@ -141,8 +141,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 Log.d(TAG, "onDataChange: username already exists. appending random string to name : "+append);
                             }
                             username = username + append;
+                           //add  new user to the database
+                            firebaseMethod.addNewUser(email, username, "","","");
 
-                            //add  new user to the database
+                            Toast.makeText(mContext, "Signup Successfully, Sending Verification email", Toast.LENGTH_SHORT).show();
+                            mAuth.signOut();
+
                         }
 
                         @Override
@@ -150,10 +154,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                         }
                     });
+                    finish();
                 }
                 else{
-                    Log.d(TAG, "signout: ");
-                }
+                    Log.d(TAG, "onAuthStateChanged: signout");                }
             }
         };
 

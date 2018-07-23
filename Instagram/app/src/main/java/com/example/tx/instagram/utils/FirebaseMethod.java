@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,6 +33,8 @@ public class FirebaseMethod {
     public FirebaseMethod(Context context){
 
         mAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        mRef = firebaseDatabase.getReference();
         mContext = context;
 
         if (mAuth.getCurrentUser() != null){
@@ -54,6 +57,7 @@ public class FirebaseMethod {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "Create User with email : on complete"+task.isSuccessful());
                         if(task.isSuccessful()){
+                            sendVerficationEmail();
                             userId = mAuth.getCurrentUser().getUid();
                             Log.d(TAG, "on Complete Authstate changed"+task.isSuccessful());
                         }
@@ -75,7 +79,7 @@ public class FirebaseMethod {
 
         User user = new User();
 
-        for (DataSnapshot ds: dataSnapshot.getChildren()){
+        for (DataSnapshot ds: dataSnapshot.child(userId).getChildren()){
             Log.d(TAG, "checkIFUserNameExist: datasnapshot "+ds);
 
             user.setUsername(ds.getValue(User.class).getUsername());
@@ -90,6 +94,14 @@ public class FirebaseMethod {
         return false;
     }
 
+    /**
+     * Add ne user on firebase
+     * @param email
+     * @param username
+     * @param description
+     * @param website
+     * @param profile_photo
+     */
     public  void addNewUser(String email, String username, String description, String website, String profile_photo){
 
         User user = new User(userId,1,email,username);
@@ -106,5 +118,25 @@ public class FirebaseMethod {
                 username,
                 website);
 
+        mRef.child(mContext.getString(R.string.db_user_account_setting)).child(userId).setValue(user);
+
+    }
+
+    public void sendVerficationEmail(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null){
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+
+                            }else{
+                                Toast.makeText(mContext, "Cloudn;t send Verfication email", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
     }
 }

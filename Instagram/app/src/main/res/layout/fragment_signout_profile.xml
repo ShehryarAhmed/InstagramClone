@@ -3,5 +3,46 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/tv_confrimSignout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:text="Are you sure you want to signout"
+            />
+        <Button
+            android:id="@+id/btn_confirm_signout"
+            android:layout_below="@+id/tv_confrimSignout"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_round_btn"
+            android:layout_centerHorizontal="true"
+            android:text="SIGN OUT"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"/>
+    </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/tv_signingOut"
+        android:layout_below="@+id/progressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Out..."
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
 
 </RelativeLayout>
