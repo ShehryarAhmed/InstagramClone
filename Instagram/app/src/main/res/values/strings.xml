@@ -11,6 +11,8 @@
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>
-
-
+    //Intent Extras
+    <string name="calling_activity">calling_activity</string>
+    //Activity name
+    <string name="profile_activity">Profile Activity</string>
 </resources>

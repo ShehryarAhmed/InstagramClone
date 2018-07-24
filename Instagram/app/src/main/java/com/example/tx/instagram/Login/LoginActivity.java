@@ -13,9 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.example.tx.instagram.MainActivity;
+import com.example.tx.instagram.Home.HomeActivity;
 import com.example.tx.instagram.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -89,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         try{
                                             if(user.isEmailVerified()){
-                                                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                                                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                                             }
                                             else{
                                                 Toast.makeText(mContext, "Email is not verfied \n check your email inbox", Toast.LENGTH_SHORT).show();
@@ -115,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
                 if (mAuth.getCurrentUser() != null){
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();
                 }
             }

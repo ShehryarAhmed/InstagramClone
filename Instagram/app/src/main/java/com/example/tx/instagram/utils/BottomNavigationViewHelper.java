@@ -7,8 +7,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.tx.instagram.Home.HomeActivity;
 import com.example.tx.instagram.Like.LikeActivity;
-import com.example.tx.instagram.MainActivity;
 import com.example.tx.instagram.Profile.ProfileActivity;
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.Search.SearchingActivity;
@@ -33,7 +33,7 @@ public class BottomNavigationViewHelper {
 
                 switch (item.getItemId()){
                     case R.id.ic_house:
-                        Intent intent1 = new Intent(context, MainActivity.class);
+                        Intent intent1 = new Intent(context, HomeActivity.class);
                         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent1);
                         break;

@@ -1,6 +1,7 @@
 package com.example.tx.instagram.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -50,7 +51,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         setUpSettingList();
         setUpBottomNavigationView();
         setUpFragments();
-
+        getInComingIntent();
         backArrow = (ImageView) findViewById(R.id.backArraw);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,5 +112,14 @@ public class AccountSettingActivity extends AppCompatActivity {
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
+    }
+
+    private void getInComingIntent(){
+        Intent intent = getIntent();
+
+        if (intent.hasExtra(getString(R.string.calling_activity))){
+            Log.d(TAG, "getInComingIntent: recevied incominng intent  from");
+            setViewPager(pagerAdapter.getFragmentNumber(getString(R.string.edit_profile)));
+        }
     }
 }

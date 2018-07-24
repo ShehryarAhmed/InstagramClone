@@ -38,7 +38,7 @@ public class SignOutFragment extends Fragment {
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         tvSigningOut = (TextView) view.findViewById(R.id.tv_signingOut);
         signOutBtn = (Button) view.findViewById(R.id.btn_confirm_signout);
-
+        setUpFirebaseAuth();
         signOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
