@@ -6,8 +6,9 @@
     <string name="auth_failed">Authentication failed</string>
 
     //Firebase database node name
-    <string name="db_user">users</string>
+    <string name="dbname_user">users</string>
     <string name="db_user_account_setting">users_account_settings</string>
+    <string name="filed_username">username</string>
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>

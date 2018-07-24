@@ -74,25 +74,25 @@ public class FirebaseMethod {
      * @param dataSnapshot
      */
 
-    public boolean checkIfUserNameExist(String username,DataSnapshot dataSnapshot){
-        Log.d(TAG, "checkIFUserNameExist: check if user "+username+" already exists or not");
-
-        User user = new User();
-
-        for (DataSnapshot ds: dataSnapshot.child(userId).getChildren()){
-            Log.d(TAG, "checkIFUserNameExist: datasnapshot "+ds);
-
-            user.setUsername(ds.getValue(User.class).getUsername());
-            Log.d(TAG, "checkIFUserNameExist: username : "+user.getUsername());
-
-            if(StringManipulation.expandUsername(user.getUsername()).equals(username)){
-                Log.d(TAG, "checkIFUserNameExist: Found A match "+user.getUsername());
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    public boolean checkIfUserNameExist(String username,DataSnapshot dataSnapshot){
+//        Log.d(TAG, "checkIFUserNameExist: check if user "+username+" already exists or not");
+//
+//        User user = new User();
+//
+//        for (DataSnapshot ds: dataSnapshot.child(userId).getChildren()){
+//            Log.d(TAG, "checkIFUserNameExist: datasnapshot "+ds);
+//
+//            user.setUsername(ds.getValue(User.class).getUsername());
+//            Log.d(TAG, "checkIFUserNameExist: username : "+user.getUsername());
+//
+//            if(StringManipulation.expandUsername(user.getUsername()).equals(username)){
+//                Log.d(TAG, "checkIFUserNameExist: Found A match "+user.getUsername());
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     /**
      * Add ne user on firebase
@@ -106,7 +106,7 @@ public class FirebaseMethod {
 
         User user = new User(userId,1,email,StringManipulation.condenseUsername(username));
 
-        mRef.child(mContext.getString(R.string.db_user)).child(userId).setValue(user);
+        mRef.child(mContext.getString(R.string.dbname_user)).child(userId).setValue(user);
 
         UserAccountSetting userAccountSetting = new UserAccountSetting(
                 description,
@@ -196,9 +196,9 @@ public class FirebaseMethod {
                 } catch (NullPointerException e) {
                     Log.d(TAG, "getUserAccountSetting: NullPointerException " + e.getMessage());
                 }
-
+            }
                 // user node
-                if (ds.getKey().equals(mContext.getString(R.string.db_user))) {
+                if (ds.getKey().equals(mContext.getString(R.string.dbname_user))) {
                     Log.d(TAG, "getUserAccountSetting: datasnapshot : " + ds);
 
                     user.setUsername(
@@ -224,9 +224,24 @@ public class FirebaseMethod {
 
                     Log.d(TAG, "getUserAccountSetting: retried users information : " + toString());
                 }
-            }
+
 
         }
         return new UserSettings(user,settings);
     }
+
+    public void updateUsername(String username) {
+        Log.d(TAG, "updateUsername: update username to "+username);
+
+        mRef.child(mContext.getString(R.string.dbname_user))
+                .child(userId)
+                .child(mContext.getString(R.string.filed_username))
+                .setValue(username);
+        mRef.child(mContext.getString(R.string.db_user_account_setting))
+                .child(userId)
+                .child(mContext.getString(R.string.filed_username))
+                .setValue(username);
+    }
+
+
 }

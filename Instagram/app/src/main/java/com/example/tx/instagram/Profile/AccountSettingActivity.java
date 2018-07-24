@@ -61,17 +61,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         });
 
     }
-//    private void setUpBottomNavigationView(){
-//
-//        Log.d(TAG, "setUpBottomNavigationView: ");
-//        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation_bar);
-//        BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
-//        BottomNavigationViewHelper.enableNavigation(getApplicationContext(),bottomNavigationViewEx);
-//
-//        Menu menu = bottomNavigationViewEx.getMenu();
-//        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
-//        menuItem.setChecked(true);
-//    }
+
 
     private  void setUpSettingList(){
         Log.d(TAG, "setUpSettingList: ");
