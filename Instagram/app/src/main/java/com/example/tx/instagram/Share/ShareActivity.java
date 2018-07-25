@@ -1,6 +1,8 @@
 package com.example.tx.instagram.Share;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -8,12 +10,16 @@ import android.view.MenuItem;
 
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
+import com.example.tx.instagram.utils.Permissions;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class ShareActivity extends AppCompatActivity {
 
     private static final String TAG = "ShareActivity";
+
+    //Constants
     public static final int ACTIVITY_NUM = 2;
+    public static final int VERIFY_PERMISSION_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +27,56 @@ public class ShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: START");
         setUpBottomNavigationView();
+
+        if (checkPermissionArrays(Permissions.PERMISSIONS)) {
+
+        } else {
+            verifyPermission(Permissions.PERMISSIONS);
+        }
     }
+
+    public void verifyPermission(String[] permission){
+        Log.d(TAG, "verifyPermission:  verifying permission");
+
+        ActivityCompat.requestPermissions(
+                ShareActivity.this,
+                permission,
+                VERIFY_PERMISSION_REQUEST
+        );
+    }
+    /**
+     * Check an array of permission
+     * @param permission
+     * @return
+     */
+    public boolean checkPermissionArrays(String[] permission) {
+        Log.d(TAG, "checkPermissionArrays: checking permission array");
+
+        for (int i = 0; i <permission.length; i++ ){
+            String check = permission[i];
+            if(!checkPermissions(check)){return false; }
+        }
+        return true;
+    }
+
+    /**
+     * Check a single Permission is it has been verified
+     * @param permission
+     * @return
+     */
+    public boolean checkPermissions(String permission) {
+        Log.d(TAG, "checkPermissionArrays: Checking  permission: " + permission);
+        int permissionRequest = ActivityCompat.checkSelfPermission(ShareActivity.this, permission);
+        if (permissionRequest != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "checkPermissionArrays: \n Permission was not granted for " + permission);
+            return false;
+        } else {
+            Log.d(TAG, "checkPermissionArrays: \n Permission was granted for " + permission);
+            return true;
+        }
+    }
+
+
     private void setUpBottomNavigationView(){
         Log.d(TAG, "setUpBottomNavigationView: ");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation_bar);

@@ -1,14 +1,22 @@
 <resources>
     <string name="app_name">Instagram</string>
-
+    <!-- Fragment Names-->
     <string name="edit_profile">Edit Profile</string>
     <string name="sign_out">Sign Out</string>
     <string name="auth_failed">Authentication failed</string>
+
+    <!-- Dialogs Names-->
+    <string name="confirmPassword">ConfirmPasswordDialogs</string>
 
     //Firebase database node name
     <string name="dbname_user">users</string>
     <string name="db_user_account_setting">users_account_settings</string>
     <string name="filed_username">username</string>
+    <string name="filed_email">email</string>
+    <string name="filed_display_name">display_name</string>
+    <string name="filed_website">website</string>
+    <string name="filed_description">description</string>
+    <string name="filed_phone_number">phone_number</string>
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>

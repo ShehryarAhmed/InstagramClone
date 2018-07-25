@@ -133,7 +133,7 @@ public class FirebaseMethod {
                             if(task.isSuccessful()){
 
                             }else{
-                                Toast.makeText(mContext, "Cloudn;t send Verfication email", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "Cloudnt send Verfication email", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -230,6 +230,43 @@ public class FirebaseMethod {
         return new UserSettings(user,settings);
     }
 
+
+    /**
+     * Update user account setting node for the current user
+     * @param displayName
+     * @param description
+     * @param website
+     * @param phoneNumber
+     */
+    public void updateUserAccountSettings(String displayName,String description,String website, long phoneNumber){
+        Log.d(TAG, "updateUserAccountSettings: updating user account setting");
+
+        if(displayName != null){
+            mRef.child(mContext.getString(R.string.db_user_account_setting))
+                .child(userId)
+                .child(mContext.getString(R.string.filed_display_name))
+                .setValue(displayName);}
+        if(description != null){
+            mRef.child(mContext.getString(R.string.db_user_account_setting))
+                .child(userId)
+                .child(mContext.getString(R.string.filed_website))
+               .setValue(description);}
+        if(website != null){
+            mRef.child(mContext.getString(R.string.db_user_account_setting))
+                .child(userId)
+                .child(mContext.getString(R.string.filed_description))
+                .setValue(website);}
+        if(phoneNumber != 0){
+            mRef.child(mContext.getString(R.string.dbname_user))
+                .child(userId)
+                .child(mContext.getString(R.string.filed_phone_number))
+                .setValue(phoneNumber);}
+    }
+    /**
+     * Update username the email in the user's and user account setting node
+     * @param username
+     */
+
     public void updateUsername(String username) {
         Log.d(TAG, "updateUsername: update username to "+username);
 
@@ -242,6 +279,19 @@ public class FirebaseMethod {
                 .child(mContext.getString(R.string.filed_username))
                 .setValue(username);
     }
+
+    /**
+     * Update email the email in the user's node
+     * @param email
+     */
+    public void updateEmail(String email) {
+        Log.d(TAG, "update User email: to "+email);
+
+        mRef.child(mContext.getString(R.string.dbname_user))
+                .child(userId)
+                .child(mContext.getString(R.string.filed_email))
+                .setValue(email);
+        }
 
 
 }
