@@ -2,15 +2,19 @@ package com.example.tx.instagram.Share;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.example.tx.instagram.utils.Permissions;
+import com.example.tx.instagram.utils.SectionPagerAdapter;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class ShareActivity extends AppCompatActivity {
@@ -20,21 +24,40 @@ public class ShareActivity extends AppCompatActivity {
     //Constants
     public static final int ACTIVITY_NUM = 2;
     public static final int VERIFY_PERMISSION_REQUEST = 1;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_share);
         Log.d(TAG, "onCreate: START");
-        setUpBottomNavigationView();
+//        setUpBottomNavigationView();
 
         if (checkPermissionArrays(Permissions.PERMISSIONS)) {
-
+            setUpViewPager();
         } else {
             verifyPermission(Permissions.PERMISSIONS);
         }
     }
 
+    private void setUpViewPager(){
+        SectionPagerAdapter adapter = new SectionPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new GalleryFragment());
+        adapter.addFragment(new PhotoFragment());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsBottom);
+        tabLayout.setupWithViewPager(mViewPager);
+
+        tabLayout.getTabAt(0).setText(getString(R.string.gallery));
+        tabLayout.getTabAt(1).setText(getString(R.string.photo));
+    }
+
+    /**
+     * verify all the permissions passed array
+     * @param permission
+     */
     public void verifyPermission(String[] permission){
         Log.d(TAG, "verifyPermission:  verifying permission");
 
