@@ -34,7 +34,6 @@
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:textAlignment=""
                 >
 
             </Spinner>

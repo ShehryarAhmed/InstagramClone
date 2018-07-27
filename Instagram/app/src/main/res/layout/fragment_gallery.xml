@@ -9,6 +9,7 @@
         android:layout_height="wrap_content">
 
         <!--- gallery toolbar-->
+        <include layout="@layout/snippet_top_gallerytoolbar"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_below="@+id/rellayout1"
@@ -31,7 +32,9 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:id="@+id/progressBar"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                />
         </RelativeLayout>
         <GridView
             android:id="@+id/gridView"
