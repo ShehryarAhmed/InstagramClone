@@ -31,8 +31,8 @@ public class ShareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         Log.d(TAG, "onCreate: START");
-//        setUpBottomNavigationView();
 
+//        setUpBottomNavigationView();
         if (checkPermissionArrays(Permissions.PERMISSIONS)) {
             setUpViewPager();
         } else {
