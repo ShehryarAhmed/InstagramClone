@@ -1,8 +1,10 @@
 package com.example.tx.instagram.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tx.instagram.R;
@@ -17,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class FirebaseMethod {
 
@@ -26,6 +31,7 @@ public class FirebaseMethod {
     private FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference mRef;
+    private StorageReference  mStorageReference;
 
     private String userId;
     private Context mContext;
@@ -35,12 +41,46 @@ public class FirebaseMethod {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
         mContext = context;
 
         if (mAuth.getCurrentUser() != null){
             userId = mAuth.getCurrentUser().getUid();
         }
 
+    }
+
+    public void uploadNewPhoto(String photoType, String caption, int count, String imgUrl){
+        Log.d(TAG, "uploadNewPhoto: aattempting to upload new photo.");
+        FilePaths filePaths = new FilePaths();
+        //case 1 new photo
+        if(photoType.equals(mContext.getString(R.string.new_photo))){
+            Log.d(TAG, "uploadNewPhoto: uploading new photo");
+
+            StorageReference storageReference = mStorageReference
+                    .child(filePaths.FIREBASE_IMAGE_STORAGE+"/"+userId+"/photo"+(count+1));
+
+            //convert image url to bitmap
+            Bitmap bm = ImageManager.getBitmap(imgUrl);
+            byte[] bytes = ImageManager.getBytesFromBitmap(bm, 100);
+
+            UploadTask uploadTask = null;
+            uploadTask = storageReference.putBytes(bytes);
+        }
+        //case 2 new profile photo
+        else if(photoType.equals(mContext.getString(R.string.profile_photo))){
+            Log.d(TAG, "uploadNewPhoto: uploading new profile photo");
+        }
+    }
+
+    public int getImageCount(DataSnapshot dataSnapshot){
+        int count = 0;
+        for(DataSnapshot  ds : dataSnapshot.child(mContext.getString(R.string.dbname_user_photo))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .getChildren()){
+            count++;
+        }
+        return count;
     }
 
     /**

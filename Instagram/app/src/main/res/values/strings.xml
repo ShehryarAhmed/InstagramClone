@@ -17,6 +17,8 @@
     <string name="filed_website">website</string>
     <string name="filed_description">description</string>
     <string name="filed_phone_number">phone_number</string>
+    <string name="new_photo">new_photo</string>
+    <string name="profile_photo">profile_photo</string>
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>
@@ -30,5 +32,6 @@
     <string name="photo">PHOTO</string>
     <string name="string_open_camera">Open Camera</string>
     <string name="selected_imgae">SelectImage</string>
+    <string name="dbname_user_photo">user_photo</string>
 
 </resources>
