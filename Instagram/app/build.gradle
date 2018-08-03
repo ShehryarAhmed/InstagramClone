@@ -34,14 +34,14 @@ dependencies {
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //firebase aauth
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
 
     //firebase core
-    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
     //firebase database
     implementation 'com.google.firebase:firebase-database:16.0.1'
     // firebase storage
-    implementation 'com.google.firebase:firebase-storage:11.8.0'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

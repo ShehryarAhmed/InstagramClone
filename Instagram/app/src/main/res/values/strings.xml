@@ -10,20 +10,25 @@
 
     //Firebase database node name
     <string name="dbname_user">users</string>
-    <string name="db_user_account_setting">users_account_settings</string>
+    <string name="dbname_user_account_setting">users_account_settings</string>
     <string name="filed_username">username</string>
     <string name="filed_email">email</string>
     <string name="filed_display_name">display_name</string>
     <string name="filed_website">website</string>
     <string name="filed_description">description</string>
     <string name="filed_phone_number">phone_number</string>
-    <string name="new_photo">new_photo</string>
-    <string name="profile_photo">profile_photo</string>
+    <string name="dbname_photos">photos</string>
+    <string name="dbname_user_photos">user_photos</string>
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>
     //Intent Extras
     <string name="calling_activity">calling_activity</string>
+    <string name="selected_imgae">SelectImage</string>
+    <string name="return_to_fragment">return_to_fragment</string>
+
+
+
     //Activity name
     <string name="profile_activity">Profile Activity</string>
 
@@ -31,7 +36,9 @@
     <string name="gallery">GALLERY</string>
     <string name="photo">PHOTO</string>
     <string name="string_open_camera">Open Camera</string>
-    <string name="selected_imgae">SelectImage</string>
     <string name="dbname_user_photo">user_photo</string>
 
+    <!-- photo types -->
+    <string name="new_photo">new_photo</string>
+    <string name="profile_photo">profile_photo</string>
 </resources>

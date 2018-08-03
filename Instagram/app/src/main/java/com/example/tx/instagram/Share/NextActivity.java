@@ -29,9 +29,9 @@ public class NextActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseDatabase mFirebaseDBRef;
     private DatabaseReference mRef;
-    private FirebaseMethod mFirebaseMethod;
+    private FirebaseMethod mFirebaseMethods;
 
-    private TextView tv_next;
+    private TextView share;
     private ImageView ic_back_arrow;
     private EditText mCaption;
 
@@ -44,21 +44,21 @@ public class NextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
-
+        mFirebaseMethods = new FirebaseMethod(NextActivity.this);
 
         Log.d(TAG, "onCreate: setart"+    getIntent().getStringExtra(getString(R.string.selected_imgae)));
         initWidgets();
         setUpFirebaseAuth();
         setImage();
 
-        tv_next.setOnClickListener(new View.OnClickListener() {
+        share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: next textview");
                 //upload image on firebase
                 Toast.makeText(NextActivity.this, "Attempting to upload new photo", Toast.LENGTH_SHORT).show();
                 String caption = mCaption.getText().toString();
-                mFirebaseMethod.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgUrl);
+                mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgUrl);
             }
         });
         ic_back_arrow.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +79,8 @@ public class NextActivity extends AppCompatActivity {
     private void setImage(){
         Intent intent = getIntent();
         ImageView image = (ImageView) findViewById(R.id.imageShare);
-        UniversalImageLoader.setImage(intent.getStringExtra(getString(R.string.selected_imgae)), image, null, mAppend);
+        imgUrl = intent.getStringExtra(getString(R.string.selected_imgae));
+        UniversalImageLoader.setImage(imgUrl, image, null, mAppend);
     }
     /*
      ***********************************************init widgets******************************************************
@@ -88,9 +89,8 @@ public class NextActivity extends AppCompatActivity {
      * setup widgets auth object
      */
     private void initWidgets(){
-        mFirebaseMethod = new FirebaseMethod(NextActivity.this);
         mCaption = (EditText) findViewById(R.id.caption);
-        tv_next = (TextView) findViewById(R.id.tvShare);
+        share = (TextView) findViewById(R.id.tvShare);
         ic_back_arrow = (ImageView) findViewById(R.id.ic_back_arrow);
     }
 

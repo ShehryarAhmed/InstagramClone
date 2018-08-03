@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.tx.instagram.Profile.AccountSettingActivity;
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.utils.FilePaths;
 import com.example.tx.instagram.utils.FileSearch;
@@ -58,6 +59,15 @@ public class GalleryFragment extends Fragment {
         return view;
     }
 
+    private boolean isRootTask(){
+        if(((ShareActivity)getActivity()).getTask() == 0 ){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     private void initWidgets(View view){
         Log.d(TAG, "initWidgets: started");
         galleryIamge = (ImageView) view.findViewById(R.id.galleryImageView);
@@ -78,9 +88,17 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: navigate the final share screen ");
-                Intent intent = new Intent(getActivity(),NextActivity.class);
-                intent.putExtra(getString(R.string.selected_imgae),mSelectedImage);
-                startActivity(intent);
+                if(isRootTask()){
+                    Intent intent = new Intent(getActivity(),NextActivity.class);
+                    intent.putExtra(getString(R.string.selected_imgae),mSelectedImage);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getActivity(),AccountSettingActivity.class);
+                    intent.putExtra(getString(R.string.selected_imgae),mSelectedImage);
+                    intent.putExtra(getString(R.string.return_to_fragment),getString(R.string.edit_profile));
+                    startActivity(intent);
+                }
+
             }
         });
     }

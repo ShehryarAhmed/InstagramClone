@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
+import com.example.tx.instagram.utils.FirebaseMethod;
 import com.example.tx.instagram.utils.SectionStatePagerAdapter;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -61,7 +62,6 @@ public class AccountSettingActivity extends AppCompatActivity {
         });
 
     }
-
 
     private  void setUpSettingList(){
         Log.d(TAG, "setUpSettingList: ");
@@ -107,6 +107,17 @@ public class AccountSettingActivity extends AppCompatActivity {
     private void getInComingIntent(){
         Intent intent = getIntent();
 
+        //if there is an imageurl attached as an extra  then it was chosen from the gallery/photo fragment
+        if(intent.hasExtra(mContext.getString(R.string.selected_imgae))){
+            Log.d(TAG, "getInComingIntent: new in comming imgurl ");
+            if (intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString(R.string.edit_profile))){
+
+                //set the new profile picture
+                FirebaseMethod firebaseMethods = new FirebaseMethod(AccountSettingActivity.this);
+                firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo),null, 0,
+                        intent.getStringExtra(getString(R.string.selected_imgae)));
+            }
+        }
         if (intent.hasExtra(getString(R.string.calling_activity))){
             Log.d(TAG, "getInComingIntent: recevied incominng intent  from");
             setViewPager(pagerAdapter.getFragmentNumber(getString(R.string.edit_profile)));

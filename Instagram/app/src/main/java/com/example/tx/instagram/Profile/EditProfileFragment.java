@@ -1,5 +1,6 @@
 package com.example.tx.instagram.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tx.instagram.R;
+import com.example.tx.instagram.Share.ShareActivity;
 import com.example.tx.instagram.dialogs.ConfirmPassworodDialog;
 import com.example.tx.instagram.model.User;
 import com.example.tx.instagram.model.UserAccountSetting;
@@ -267,6 +269,8 @@ public class EditProfileFragment extends Fragment implements ConfirmPassworodDia
         mPhoneNumber.setText(String.valueOf(userSettings.getUser().getPhone_number()));
 
 
+
+
     }
     /*
      ***********************************************Firebase******************************************************
@@ -339,6 +343,17 @@ public class EditProfileFragment extends Fragment implements ConfirmPassworodDia
         mProfilePhoto = (CircleImageView) view.findViewById(R.id.profile_photo);
         mBackArrow = (ImageView) view.findViewById(R.id.backArraw);
         mCheckMark = (ImageView) view.findViewById(R.id.saveChanges);
+
+        mChangeProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: change profile photo");
+
+                Intent intent = new Intent(getActivity(), ShareActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//3242442
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
 }
