@@ -108,7 +108,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         //if there is an imageurl attached as an extra  then it was chosen from the gallery/photo fragment
-        if(intent.hasExtra(mContext.getString(R.string.selected_imgae))){
+        if(intent.hasExtra(getString(R.string.selected_imgae))){
             Log.d(TAG, "getInComingIntent: new in comming imgurl ");
             if (intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString(R.string.edit_profile))){
 

@@ -24,7 +24,7 @@
     <string name="profile_fragment">Profile_Fragment</string>
     //Intent Extras
     <string name="calling_activity">calling_activity</string>
-    <string name="selected_imgae">SelectImage</string>
+    <string name="selected_imgae">selected_image</string>
     <string name="return_to_fragment">return_to_fragment</string>
 
 
