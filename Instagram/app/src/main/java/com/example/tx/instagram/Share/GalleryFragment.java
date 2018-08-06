@@ -54,19 +54,21 @@ public class GalleryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery,container,false);
         Log.d(TAG, "onCreateView: started");
+        Log.d(TAG, "task"+((ShareActivity)getActivity()).getTask());
         initWidgets(view);
         init();
         return view;
     }
 
-    private boolean isRootTask(){
-        if(((ShareActivity)getActivity()).getTask() == 0 ){
-            return true;
+        private boolean isRootTask(){
+            Log.d(TAG, "isRootTask: "+((ShareActivity)getActivity()).getTask());
+            if(((ShareActivity)getActivity()).getTask() == 0 ){
+                return true;
+            }
+            else {
+                return false;
+            }
         }
-        else {
-            return false;
-        }
-    }
 
     private void initWidgets(View view){
         Log.d(TAG, "initWidgets: started");
@@ -89,14 +91,17 @@ public class GalleryFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: navigate the final share screen ");
                 if(isRootTask()){
+
                     Intent intent = new Intent(getActivity(),NextActivity.class);
-                    intent.putExtra(getString(R.string.selected_imgae),mSelectedImage);
+                    intent.putExtra(getString(R.string.selected_image),mSelectedImage);
                     startActivity(intent);
+
                 }else{
                     Intent intent = new Intent(getActivity(),AccountSettingActivity.class);
-                    intent.putExtra(getString(R.string.selected_imgae),mSelectedImage);
+                    intent.putExtra(getString(R.string.selected_image),mSelectedImage);
                     intent.putExtra(getString(R.string.return_to_fragment),getString(R.string.edit_profile));
                     startActivity(intent);
+                    getActivity().finish();
                 }
 
             }

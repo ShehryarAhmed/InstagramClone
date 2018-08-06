@@ -2,6 +2,7 @@ package com.example.tx.instagram.Profile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -35,7 +36,7 @@ public class AccountSettingActivity extends AppCompatActivity {
 
     private Context mContext;
     private ImageView backArrow;
-    private SectionStatePagerAdapter pagerAdapter;
+    public SectionStatePagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private RelativeLayout mRelativeLayout;
 
@@ -82,7 +83,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         });
     }
 
-     private void setViewPager(int fragmenNumber){
+     public void setViewPager(int fragmenNumber){
         mRelativeLayout.setVisibility(View.GONE);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(fragmenNumber);
@@ -107,15 +108,26 @@ public class AccountSettingActivity extends AppCompatActivity {
     private void getInComingIntent(){
         Intent intent = getIntent();
 
-        //if there is an imageurl attached as an extra  then it was chosen from the gallery/photo fragment
-        if(intent.hasExtra(getString(R.string.selected_imgae))){
-            Log.d(TAG, "getInComingIntent: new in comming imgurl ");
-            if (intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString(R.string.edit_profile))){
+        Log.d(TAG, "getInComingIntent: new in comming imgurl ");
 
-                //set the new profile picture
-                FirebaseMethod firebaseMethods = new FirebaseMethod(AccountSettingActivity.this);
-                firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo),null, 0,
-                        intent.getStringExtra(getString(R.string.selected_imgae)));
+        if(intent.hasExtra(getString(R.string.selected_image)) || intent.hasExtra(getString(R.string.selected_bitmap)) ){
+
+        //if there is an imageurl attached as an extra  then it was chosen from the gallery/photo fragment
+
+        if(intent.getStringExtra(getString(R.string.return_to_fragment)).equals(R.string.edit_profile)) {
+
+                if (intent.hasExtra(getString(R.string.selected_image))){
+                   //set the new profile picture
+                    FirebaseMethod firebaseMethods = new FirebaseMethod(AccountSettingActivity.this);
+                    firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo),null, 0,
+                            intent.getStringExtra(getString(R.string.selected_image)),null);
+                }
+                else if(intent.hasExtra(getString(R.string.selected_bitmap))){
+
+                    FirebaseMethod firebaseMethods = new FirebaseMethod(AccountSettingActivity.this);
+                    firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo),null, 0,null,
+                            (Bitmap) intent.getParcelableExtra(getString(R.string.selected_image)));
+                }
             }
         }
         if (intent.hasExtra(getString(R.string.calling_activity))){

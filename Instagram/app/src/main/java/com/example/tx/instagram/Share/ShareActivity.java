@@ -38,12 +38,24 @@ public class ShareActivity extends AppCompatActivity {
         } else {
             verifyPermission(Permissions.PERMISSIONS);
         }
+        getTask();
+    }
+
+    /**
+     * return the current tab number
+     * 0 = GalleryFragment
+     * 1 = PhotoFragment
+     * @return
+     */
+    public int getCurrentTabNumber(){
+        return mViewPager.getCurrentItem();
     }
 
     private void setUpViewPager(){
         SectionPagerAdapter adapter = new SectionPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new GalleryFragment());
         adapter.addFragment(new PhotoFragment());
+
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(adapter);
 

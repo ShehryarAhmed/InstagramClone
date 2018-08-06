@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.tx.instagram.Home.HomeActivity;
+import com.example.tx.instagram.Profile.AccountSettingActivity;
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
@@ -53,6 +54,7 @@ public class FirebaseMethod {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference();
+
         mStorageReference = FirebaseStorage.getInstance().getReference();
         mContext = context;
 
@@ -62,7 +64,7 @@ public class FirebaseMethod {
 
     }
 
-    public void uploadNewPhoto(String photoType, final String caption, int count, String imgUrl){
+    public void uploadNewPhoto(String photoType, final String caption, int count, String imgUrl,Bitmap bm){
         Log.d(TAG, "uploadNewPhoto: attempting to upload new photo.");
         FilePaths filePaths = new FilePaths();
         //case 1 new photo
@@ -73,7 +75,9 @@ public class FirebaseMethod {
                     .child(filePaths.FIREBASE_IMAGE_STORAGE+"/"+userId+"/photo"+(count+1));
 
             //convert image url to bitmap
-            Bitmap bm = ImageManager.getBitmap(imgUrl);
+            if(bm == null){
+                bm = ImageManager.getBitmap(imgUrl);
+            }
             byte[] bytes = ImageManager.getBytesFromBitmap(bm, 100);
 
             UploadTask uploadTask = null;
@@ -114,14 +118,16 @@ public class FirebaseMethod {
         }
         //case 2 new profile photo
         else if(photoType.equals(mContext.getString(R.string.profile_photo))){
+
             Log.d(TAG, "uploadNewPhoto: uploading new profile photo");
 
             StorageReference storageReference = mStorageReference
                     .child(filePaths.FIREBASE_IMAGE_STORAGE+"/"+userId+"/profile_photo");
 
             //convert image url to bitmap
-            Bitmap bm = ImageManager.getBitmap(imgUrl);
-            byte[] bytes = ImageManager.getBytesFromBitmap(bm, 100);
+            if(bm == null){
+                bm = ImageManager.getBitmap(imgUrl);
+            }            byte[] bytes = ImageManager.getBytesFromBitmap(bm, 100);
 
             UploadTask uploadTask = null;
             uploadTask = storageReference.putBytes(bytes);
@@ -131,10 +137,15 @@ public class FirebaseMethod {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     Uri firebaseUrl = taskSnapshot.getUploadSessionUri();
-
                     Toast.makeText(mContext, "photo upload Success", Toast.LENGTH_SHORT).show();
                     // insert into user account settings node
                     setProfilePhoto(firebaseUrl.toString());
+
+                    ((AccountSettingActivity)mContext).setViewPager(
+                            ((AccountSettingActivity)mContext).pagerAdapter
+                                    .getFragmentNumber(mContext.getString(R.string.edit_profile))
+                    );
+
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -164,11 +175,13 @@ public class FirebaseMethod {
         mRef.child(mContext.getString(R.string.dbname_user_account_setting))
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child(mContext.getString(R.string.profile_photo)).setValue(url);
+
+
     }
 
     private String getTimestamp(){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss'Z'", Locale.CANADA);
-            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Karach"));
+            sdf.setTimeZone(TimeZone.getTimeZone("Asia/Karachi"));
             return sdf.format(new Date());
         }
 

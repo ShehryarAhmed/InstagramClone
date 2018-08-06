@@ -54,7 +54,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPassworodDia
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "user reauthenticated.");
+                    Log.d(TAG, "user re-authenticated.");
 
                     //check to see if the email is not already exists in database
                     mAuth.fetchProvidersForEmail(mEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
@@ -352,6 +352,7 @@ public class EditProfileFragment extends Fragment implements ConfirmPassworodDia
                 Intent intent = new Intent(getActivity(), ShareActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//3242442
                 getActivity().startActivity(intent);
+                getActivity().finish();
             }
         });
     }

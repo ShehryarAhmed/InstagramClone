@@ -1,6 +1,7 @@
 package com.example.tx.instagram.Share;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +38,9 @@ public class NextActivity extends AppCompatActivity {
 
     private static final String mAppend = "file:/";
     private String imgUrl;
+    private Bitmap bitmap;
     private int imageCount = 0;
+    private Intent intent;
 
 
     @Override
@@ -46,7 +49,7 @@ public class NextActivity extends AppCompatActivity {
         setContentView(R.layout.activity_next);
         mFirebaseMethods = new FirebaseMethod(NextActivity.this);
 
-        Log.d(TAG, "onCreate: setart"+    getIntent().getStringExtra(getString(R.string.selected_imgae)));
+        Log.d(TAG, "onCreate: setart"+    getIntent().getStringExtra(getString(R.string.selected_image)));
         initWidgets();
         setUpFirebaseAuth();
         setImage();
@@ -58,7 +61,16 @@ public class NextActivity extends AppCompatActivity {
                 //upload image on firebase
                 Toast.makeText(NextActivity.this, "Attempting to upload new photo", Toast.LENGTH_SHORT).show();
                 String caption = mCaption.getText().toString();
-                mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgUrl);
+
+                if (intent.hasExtra(getString(R.string.selected_image))) {
+                    imgUrl = intent.getStringExtra(getString(R.string.selected_image));
+                    mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgUrl,null);
+                }
+                else if(intent.hasExtra(getString(R.string.selected_bitmap))){
+                    bitmap =  (Bitmap)intent.getParcelableExtra(getString(R.string.selected_bitmap));
+                    mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, null,bitmap);
+                }
+
             }
         });
         ic_back_arrow.setOnClickListener(new View.OnClickListener() {
@@ -77,10 +89,18 @@ public class NextActivity extends AppCompatActivity {
      */
 
     private void setImage(){
-        Intent intent = getIntent();
+        intent = getIntent();
         ImageView image = (ImageView) findViewById(R.id.imageShare);
-        imgUrl = intent.getStringExtra(getString(R.string.selected_imgae));
-        UniversalImageLoader.setImage(imgUrl, image, null, mAppend);
+
+        if (intent.hasExtra(getString(R.string.selected_image))) {
+            imgUrl = intent.getStringExtra(getString(R.string.selected_image));
+            UniversalImageLoader.setImage(imgUrl, image, null, mAppend);
+        }
+        else if(intent.hasExtra(getString(R.string.selected_bitmap))){
+            bitmap =  (Bitmap)intent.getParcelableExtra(getString(R.string.selected_bitmap));
+            Log.d(TAG, "setImage: got new bitmap");
+            image.setImageBitmap(bitmap);
+        }
     }
     /*
      ***********************************************init widgets******************************************************
