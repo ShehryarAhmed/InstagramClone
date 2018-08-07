@@ -100,6 +100,8 @@ public class ProfileFragment extends Fragment{
                 Intent intent = new Intent(getActivity(),AccountSettingActivity.class);
                 intent.putExtra(getString(R.string.calling_activity),getString(R.string.profile_fragment));
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+
             }
         });
 
@@ -120,7 +122,7 @@ public class ProfileFragment extends Fragment{
 
         Log.d(TAG, "setUpBottomNavigationView: ");
         BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext,bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext,getActivity(),bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
@@ -135,6 +137,7 @@ public class ProfileFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating too account setting");
                 startActivity(new Intent(mContext,AccountSettingActivity.class));
+                getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
             }
         });
     }
