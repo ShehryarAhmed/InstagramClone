@@ -2,6 +2,7 @@
     <string name="app_name">Instagram</string>
     <!-- Fragment Names-->
     <string name="edit_profile">Edit Profile</string>
+    <string name="view_post_fragment">View Post</string>
     <string name="sign_out">Sign Out</string>
     <string name="auth_failed">Authentication failed</string>
 
@@ -42,4 +43,8 @@
     <!-- photo types -->
     <string name="new_photo">new_photo</string>
     <string name="profile_photo">profile_photo</string>
+
+    <!-- Bundle arg name -->
+    <string name="activity_number">alling_activity</string>
+
 </resources>

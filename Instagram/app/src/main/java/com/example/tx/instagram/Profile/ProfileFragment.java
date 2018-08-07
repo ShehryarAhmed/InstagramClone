@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -43,6 +44,12 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment{
+
+    public interface OnGridImageSelectedListner{
+        void onGridImageSelected(Photo photo, int activityNumber);
+    }
+
+    public OnGridImageSelectedListner mOnGridImageSelectedListner;
 
     public static final int ACTIVITY_NUM = 4;
     public static final int NUM_COLUMN_GRID = 3;
@@ -118,7 +125,19 @@ public class ProfileFragment extends Fragment{
         return view;
     }
 
-        private void setUpBottomNavigationView(){
+    @Override
+    public void onAttach(Context context) {
+        try{
+            mOnGridImageSelectedListner = (OnGridImageSelectedListner) getActivity();
+        }catch (ClassCastException e){
+            Log.e(TAG, "onAttach: ClassCastException "+e.getMessage() );
+        }
+
+        super.onAttach(context);
+
+    }
+
+    private void setUpBottomNavigationView(){
 
         Log.d(TAG, "setUpBottomNavigationView: ");
         BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
@@ -168,6 +187,13 @@ public class ProfileFragment extends Fragment{
                 }
                 GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview,"",imgUrls);
                 gridView.setAdapter(adapter);
+
+                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        mOnGridImageSelectedListner.onGridImageSelected(photos.get(i), ACTIVITY_NUM);
+                    }
+                });
             }
 
             @Override

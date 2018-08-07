@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:id="@+id/relLayout2"
-        android:layout_below="@+id/rellayout1"
+        android:layout_below="@+id/relLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
