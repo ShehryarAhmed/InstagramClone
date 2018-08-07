@@ -137,6 +137,9 @@ public class ProfileFragment extends Fragment{
 
     }
 
+    /**
+     * Bottom navigation
+     */
     private void setUpBottomNavigationView(){
 
         Log.d(TAG, "setUpBottomNavigationView: ");
