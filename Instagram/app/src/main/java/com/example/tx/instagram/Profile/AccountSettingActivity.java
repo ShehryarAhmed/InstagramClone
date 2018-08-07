@@ -98,7 +98,7 @@ public class AccountSettingActivity extends AppCompatActivity {
         Log.d(TAG, "setUpBottomNavigationView: ");
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation_bar);
         BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(getApplicationContext(), bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(AccountSettingActivity.this, bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
@@ -113,8 +113,8 @@ public class AccountSettingActivity extends AppCompatActivity {
         if(intent.hasExtra(getString(R.string.selected_image)) || intent.hasExtra(getString(R.string.selected_bitmap)) ){
 
         //if there is an imageurl attached as an extra  then it was chosen from the gallery/photo fragment
-
-        if(intent.getStringExtra(getString(R.string.return_to_fragment)).equals(R.string.edit_profile)) {
+            Log.d(TAG, "getIncomingIntent: New incoming imgUrl");
+        if(intent.getStringExtra(getString(R.string.return_to_fragment)).equals(getString(R.string.edit_profile))) {
 
                 if (intent.hasExtra(getString(R.string.selected_image))){
                    //set the new profile picture

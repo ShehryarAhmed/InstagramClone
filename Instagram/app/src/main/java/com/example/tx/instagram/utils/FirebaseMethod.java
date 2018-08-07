@@ -87,7 +87,7 @@ public class FirebaseMethod {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    Uri firebaseUrl = taskSnapshot.getUploadSessionUri();
+                    Uri firebaseUrl = taskSnapshot.getDownloadUrl();
 
                     Toast.makeText(mContext, "photo upload Success", Toast.LENGTH_SHORT).show();
                     //add the new photo to photos node and  user_photo_node
@@ -136,7 +136,7 @@ public class FirebaseMethod {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    Uri firebaseUrl = taskSnapshot.getUploadSessionUri();
+                    Uri firebaseUrl = taskSnapshot.getDownloadUrl();
                     Toast.makeText(mContext, "photo upload Success", Toast.LENGTH_SHORT).show();
                     // insert into user account settings node
                     setProfilePhoto(firebaseUrl.toString());

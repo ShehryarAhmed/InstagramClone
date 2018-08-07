@@ -80,7 +80,7 @@ public class PhotoFragment extends Fragment {
                     Log.d(TAG, "onActivityResult: received now bitmapfrom camera "+bitmap);
 
                     Intent intent = new Intent(getActivity(),NextActivity.class);
-                    intent.putExtra(getString(R.string.selected_image),bitmap);
+                    intent.putExtra(getString(R.string.selected_bitmap),bitmap);
                     startActivity(intent);
                 }catch (NullPointerException e){
                     Log.d(TAG, "onActivityResult: Nullpointer Exception");
@@ -102,10 +102,6 @@ public class PhotoFragment extends Fragment {
                 }
             }
 
-        }
-
-        if(isRootTask()){
-        }else{
         }
     }
 

@@ -16,6 +16,7 @@ import com.example.tx.instagram.Share.ShareActivity;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavigationViewHelper {
+
     private static final String TAG = "BottomNavigation";
 
     public static void setUpBottomNavigation(BottomNavigationViewEx bottomNavigation){
@@ -34,27 +35,27 @@ public class BottomNavigationViewHelper {
                 switch (item.getItemId()){
                     case R.id.ic_house:
                         Intent intent1 = new Intent(context, HomeActivity.class);
-                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent1);
                         break;
                     case R.id.ic_serach:
                         Intent intent2 = new Intent(context, SearchingActivity.class);
-                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent2);
                         break;
                     case R.id.ic_circle:
                         Intent intent3 = new Intent(context, ShareActivity.class);
-                        intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent3);
                         break;
                     case R.id.ic_alert:
                         Intent intent4 = new Intent(context, LikeActivity.class);
-                        intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent4.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent4);
                         break;
                     case R.id.ic_android:
                         Intent intent5 = new Intent(context, ProfileActivity.class);
-                        intent5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        intent5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent5);
                         break;
                 }
