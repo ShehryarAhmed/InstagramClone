@@ -20,11 +20,13 @@ import android.widget.TextView;
 
 import com.example.tx.instagram.Login.LoginActivity;
 import com.example.tx.instagram.R;
+import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
 import com.example.tx.instagram.model.UserAccountSetting;
 import com.example.tx.instagram.model.UserSettings;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.example.tx.instagram.utils.FirebaseMethod;
+import com.example.tx.instagram.utils.GridImageAdapter;
 import com.example.tx.instagram.utils.UniversalImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,20 +34,26 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment{
 
     public static final int ACTIVITY_NUM = 4;
+    public static final int NUM_COLUMN_GRID = 3;
+    //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseDatabase mFirebaseDBRef;
     private DatabaseReference mRef;
     private FirebaseMethod firebaseMethod;
 
+    //widgets
     private static final String TAG = "ProfileFragment";
     private TextView mPosts;
     private TextView mFollower;
@@ -97,11 +105,14 @@ public class ProfileFragment extends Fragment{
 
         mContext = getActivity();
         firebaseMethod = new FirebaseMethod(mContext);
-        setUpFirebaseAuth();
         Log.d(TAG, "onCreateView: started");
 
         setUpBottomNavigationView();
         setupToolbar();
+
+        setUpFirebaseAuth();
+        setupGridView();
+
         return view;
     }
 
@@ -124,6 +135,41 @@ public class ProfileFragment extends Fragment{
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating too account setting");
                 startActivity(new Intent(mContext,AccountSettingActivity.class));
+            }
+        });
+    }
+
+    private void setupGridView(){
+        Log.d(TAG, "setupGridView: Setting up image grid");
+
+        final ArrayList<Photo> photos = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                .child(getString(R.string.dbname_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    photos.add(singleSnapshot.getValue(Photo.class));
+                }
+                //setup our image grid
+                int gridWidth = getResources().getDisplayMetrics().widthPixels;
+                int imageWidth = gridWidth/NUM_COLUMN_GRID;
+                gridView.setColumnWidth(imageWidth);
+
+                ArrayList<String> imgUrls = new ArrayList<String>();
+                for (int i = 0; i<photos.size(); i++){
+                    imgUrls.add(photos.get(i).getImage_path());
+                }
+                GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview,"",imgUrls);
+                gridView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: Query cancelled");
             }
         });
     }

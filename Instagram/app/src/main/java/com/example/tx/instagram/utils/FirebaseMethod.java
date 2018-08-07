@@ -209,7 +209,7 @@ public class FirebaseMethod {
 
     public int getImageCount(DataSnapshot dataSnapshot){
         int count = 0;
-        for(DataSnapshot  ds : dataSnapshot.child(mContext.getString(R.string.dbname_user_photo))
+        for(DataSnapshot  ds : dataSnapshot.child(mContext.getString(R.string.dbname_user_photos))
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .getChildren()){
             count++;
