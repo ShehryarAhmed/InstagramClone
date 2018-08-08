@@ -180,7 +180,7 @@ public class FirebaseMethod {
     }
 
     private String getTimestamp(){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss'Z'", Locale.CANADA);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("Asia/Karachi"));
             return sdf.format(new Date());
         }
@@ -290,7 +290,8 @@ public class FirebaseMethod {
                 0,
                 profile_photo,
                 StringManipulation.condenseUsername(username),
-                website);
+                website,
+                userId);
 
         mRef.child(mContext.getString(R.string.dbname_user_account_setting)).child(userId).setValue(userAccountSetting  );
 

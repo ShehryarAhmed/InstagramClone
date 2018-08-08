@@ -155,9 +155,14 @@ public class GalleryFragment extends Fragment {
         //user the grid adapter to adapter the images to gridviews
         GridImageAdapter adapter = new GridImageAdapter(getActivity(),R.layout.layout_grid_imageview,mAppend,imgUrls);
         gridView.setAdapter(adapter);
-        //
-        setImage(imgUrls.get(0),galleryIamge,mAppend);
-        mSelectedImage = imgUrls.get(0);
+        //set the first image to display when the actvity fragment view is inflated
+        try{
+            setImage(imgUrls.get(0),galleryIamge,mAppend);
+            mSelectedImage = imgUrls.get(0);
+        }catch (ArrayIndexOutOfBoundsException e){
+            Log.d(TAG, "setupGridView: ArrayIndexOutOfBoundsException "+e.getMessage() );
+        }
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

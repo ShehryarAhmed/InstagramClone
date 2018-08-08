@@ -20,6 +20,7 @@
     <string name="filed_phone_number">phone_number</string>
     <string name="dbname_photos">photos</string>
     <string name="dbname_user_photos">user_photos</string>
+    <string name="filed_user_id">user_id</string>
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>
