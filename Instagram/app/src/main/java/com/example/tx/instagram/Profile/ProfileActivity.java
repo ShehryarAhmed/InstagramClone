@@ -1,29 +1,17 @@
 package com.example.tx.instagram.Profile;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 
 import com.example.tx.instagram.R;
-import com.example.tx.instagram.ViewPostFragment;
+import com.example.tx.instagram.utils.ViewPostFragment;
 import com.example.tx.instagram.model.Photo;
-import com.example.tx.instagram.utils.BottomNavigationViewHelper;
-import com.example.tx.instagram.utils.GridImageAdapter;
-import com.example.tx.instagram.utils.UniversalImageLoader;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnGridImageSelectedListner {
     private static final String TAG = "ProfileActivity";

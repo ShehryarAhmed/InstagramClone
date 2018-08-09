@@ -47,5 +47,6 @@
 
     <!-- Bundle arg name -->
     <string name="activity_number">alling_activity</string>
+    <string name="field_likes">likes</string>
 
 </resources>
