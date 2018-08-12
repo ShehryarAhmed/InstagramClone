@@ -21,6 +21,13 @@
     <string name="dbname_photos">photos</string>
     <string name="dbname_user_photos">user_photos</string>
     <string name="filed_user_id">user_id</string>
+    <string name="field_likes">likes</string>
+    <string name="field_caption">caption</string>
+    <string name="field_date_created">date_created</string>
+    <string name="field_photo_id">photo_id</string>
+    <string name="field_image_path">image_path</string>
+    <string name="field_tags">tags</string>
+
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>
@@ -47,6 +54,5 @@
 
     <!-- Bundle arg name -->
     <string name="activity_number">alling_activity</string>
-    <string name="field_likes">likes</string>
 
 </resources>

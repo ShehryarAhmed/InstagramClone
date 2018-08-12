@@ -2,7 +2,7 @@ package com.example.tx.instagram.model;
 
 public class Like {
     private String user_id;
-
+    public Like(){}
     public Like(String user_id) {
         this.user_id = user_id;
     }
