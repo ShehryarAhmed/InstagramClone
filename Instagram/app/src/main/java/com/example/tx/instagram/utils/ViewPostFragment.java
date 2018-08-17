@@ -1,5 +1,6 @@
 package com.example.tx.instagram.utils;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -68,6 +69,7 @@ public class ViewPostFragment extends Fragment {
     private ImageView mEllipsee;
     private ImageView mHeartRed;
     private ImageView mHeartWhite;
+    private ImageView mCommentBubble;
     private ImageView mProfileImage;
 
     //firebase
@@ -89,7 +91,11 @@ public class ViewPostFragment extends Fragment {
     private StringBuilder mUsers;
     private String mLikesString = "";
 
+    public interface OnCommentThreadSelectedListner{
+        void onCommentThreadSelectedListner(Photo photo);
+    }
 
+    OnCommentThreadSelectedListner mOnCThreadSelectedListner;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -366,6 +372,7 @@ public class ViewPostFragment extends Fragment {
         mEllipsee = (ImageView) view.findViewById(R.id.ivEllipses);
         mHeartRed = (ImageView) view.findViewById(R.id.image_heart_red);
         mHeartWhite = (ImageView) view.findViewById(R.id.image_heart_outline);
+        mCommentBubble   = (ImageView) view.findViewById(R.id.comment_bubble);
         mProfileImage = (ImageView) view.findViewById(R.id.profile_photo);
 
         mbackLabel = (TextView) view.findViewById(R.id.tvBackLabel);
@@ -385,6 +392,17 @@ public class ViewPostFragment extends Fragment {
             getLikeString();
         } catch (NullPointerException e) {
             Log.e(TAG, "onCreateView: Null pointer Exception:" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try{
+            mOnCThreadSelectedListner = (OnCommentThreadSelectedListner) getActivity();
+        }catch (ClassCastException e){
+            Log.e(TAG, "onAttach: ClassCastException"+e.getMessage() );
         }
     }
 
@@ -427,6 +445,23 @@ public class ViewPostFragment extends Fragment {
         mUsername.setText(mUserAccountSettings.getUsername());
         mLikes.setText(mLikesString);
         mCaption.setText(mPhoto.getCaption());
+
+        mbackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigate back");
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        mCommentBubble.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: on comment bubble");
+                mOnCThreadSelectedListner.onCommentThreadSelectedListner(mPhoto);
+
+            }
+        });
 
         if(mLikedByCurrentUser){
             mHeartWhite.setVisibility(View.GONE);

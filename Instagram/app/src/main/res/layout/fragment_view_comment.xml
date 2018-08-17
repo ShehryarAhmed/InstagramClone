@@ -31,14 +31,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/white_gray_boader_top">
+        android:background="@drawable/white_gray_boader_top"
+        >
 
         <EditText
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:background="null"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
@@ -46,6 +46,7 @@
             android:textSize="14sp"/>
 
         <ImageView
+            android:id="@+id/ivPostComment"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"

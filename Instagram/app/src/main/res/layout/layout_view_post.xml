@@ -89,7 +89,7 @@
 
             </RelativeLayout>
             <ImageView
-                android:id="@+id/speech_bubble"
+                android:id="@+id/comment_bubble"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_toRightOf="@+id/heart_layout"

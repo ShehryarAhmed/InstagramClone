@@ -10,10 +10,30 @@ import android.widget.ProgressBar;
 
 
 import com.example.tx.instagram.R;
+import com.example.tx.instagram.utils.ViewCommentsFragment;
 import com.example.tx.instagram.utils.ViewPostFragment;
 import com.example.tx.instagram.model.Photo;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnGridImageSelectedListner {
+public class ProfileActivity extends AppCompatActivity implements
+        ProfileFragment.OnGridImageSelectedListner,
+        ViewPostFragment.OnCommentThreadSelectedListner{
+
+
+    @Override
+    public void onCommentThreadSelectedListner(Photo photo) {
+        Log.d(TAG, "onCommentThreadSelectedListner: selected a comment thread");
+
+        ViewCommentsFragment fragment = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo),photo);
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,fragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragement));
+        transaction.commit();
+    }
+
     private static final String TAG = "ProfileActivity";
     public static final int ACTIVITY_NUM = 4;
     public static final int NUM_GRID_COLUMNS = 3;

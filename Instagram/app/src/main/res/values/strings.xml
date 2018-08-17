@@ -54,5 +54,6 @@
 
     <!-- Bundle arg name -->
     <string name="activity_number">alling_activity</string>
+    <string name="view_comments_fragement">View Comments</string>
 
 </resources>
