@@ -416,6 +416,7 @@ public class ViewPostFragment extends Fragment {
 
     private void setupWidgets() {
         String timestampDiff = getTimeStampDifference();
+
         if (!timestampDiff.equals("0")) {
             mTimeStamp.setText(timestampDiff + " DAYS AGO");
         } else {
