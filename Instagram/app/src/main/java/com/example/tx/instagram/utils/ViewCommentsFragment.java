@@ -62,7 +62,7 @@ public class ViewCommentsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          View view = inflater.inflate(R.layout.fragment_view_comment, container, false);
 
-         mBackArrow = (ImageView) view.findViewById(R.id.backArraw);
+         mBackArrow = (ImageView) view.findViewById(R.id.ic_back_arrow);
          mCheckMark = (ImageView) view.findViewById(R.id.ivPostComment);
          mComment = (EditText) view.findViewById(R.id.comment);
          mListView = (ListView) view.findViewById(R.id.comment_list);
@@ -85,6 +85,7 @@ public class ViewCommentsFragment extends Fragment {
         CommentListAdapter adapter = new CommentListAdapter(getActivity(),
                 R.layout.layout_comment,mComments);
         mListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
          return view;
     }

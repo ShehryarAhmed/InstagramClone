@@ -41,8 +41,8 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
     private Context mContext;
 
     public CommentListAdapter(@NonNull Context context, @LayoutRes int resource, List<Comment> objects) {
-        super(context, resource);
-        this.mInflater = mInflater;
+        super(context, resource, objects);
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;
         layoutResource = resource;
     }
