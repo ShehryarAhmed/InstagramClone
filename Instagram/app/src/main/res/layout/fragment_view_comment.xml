@@ -43,6 +43,7 @@
             android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
             android:hint="Add a comment..."
+            android:background="@null"
             android:textSize="14sp"/>
 
         <ImageView

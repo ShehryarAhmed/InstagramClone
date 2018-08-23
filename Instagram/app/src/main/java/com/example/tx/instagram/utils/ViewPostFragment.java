@@ -368,7 +368,7 @@ public class ViewPostFragment extends Fragment {
         mPostImage = (SquareImageView) view.findViewById(R.id.post_image);
         bottomNavigationViewEx = (BottomNavigationViewEx) view.findViewById(R.id.bottom_navigation_bar);
 
-        mbackArrow = (ImageView) view.findViewById(R.id.backArraw);
+        mbackArrow = (ImageView) view.findViewById(R.id.ic_back_arrow);
         mEllipsee = (ImageView) view.findViewById(R.id.ivEllipses);
         mHeartRed = (ImageView) view.findViewById(R.id.image_heart_red);
         mHeartWhite = (ImageView) view.findViewById(R.id.image_heart_outline);

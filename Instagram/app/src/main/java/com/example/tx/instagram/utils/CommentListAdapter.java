@@ -41,8 +41,8 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
     private Context mContext;
 
     public CommentListAdapter(@NonNull Context context, @LayoutRes int resource, List<Comment> objects) {
-        super(context, resource);
-        this.mInflater = mInflater;
+        super(context, resource, objects);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;
         layoutResource = resource;
     }
@@ -81,8 +81,8 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         holder.comment.setText(getItem(position).getComment());
         //set the timestamp difference
         String timeStampDiff = getTimeStampDifference(getItem(position));
-        if (timeStampDiff.equals("0")){
-            holder.timestamp.setText("0");
+        if (!timeStampDiff.equals("0")){
+            holder.timestamp.setText(timeStampDiff + " d");
         }else{
             holder.timestamp.setText("today");
         }

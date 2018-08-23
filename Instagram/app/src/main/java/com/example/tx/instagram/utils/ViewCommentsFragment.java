@@ -57,6 +57,11 @@ public class ViewCommentsFragment extends Fragment {
     private Photo mPhoto;
     private ArrayList<Comment> mComments;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListner;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mRef;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,4 +102,51 @@ public class ViewCommentsFragment extends Fragment {
             return null;
         }
 
-    }}
+    }
+
+     /*
+     ***********************************************Firebase******************************************************
+     */
+    /**
+     * setup Firebase auth object
+     */
+
+    private void setUpFirebaseAuth(){
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mRef = mFirebaseDatabase.getReference();
+        mAuthListner =  new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                //check if user is logged in
+                if(user != null){
+                    Log.d(TAG, "onAuthStateChanged: "+user.getUid());
+                }
+                else{
+                    Log.d(TAG, "signout: ");
+                }
+            }
+        };
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        mAuth.addAuthStateListener(mAuthListner);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(mAuthListner != null){
+            mAuth.removeAuthStateListener(mAuthListner);
+        }
+    }
+}
