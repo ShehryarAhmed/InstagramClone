@@ -66,7 +66,7 @@ public class ViewCommentsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          View view = inflater.inflate(R.layout.fragment_view_comment, container, false);
-
+        setUpFirebaseAuth();
          mBackArrow = (ImageView) view.findViewById(R.id.backArraw);
          mCheckMark = (ImageView) view.findViewById(R.id.ivPostComment);
          mComment = (EditText) view.findViewById(R.id.comment);
