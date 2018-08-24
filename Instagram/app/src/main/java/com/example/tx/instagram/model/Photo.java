@@ -17,6 +17,19 @@ public class Photo implements Parcelable {
 
     public Photo(){}
 
+
+    public Photo(String caption, String date_created, String image_path,
+                 String photo_id, String user_id, String tags, List<Like> likes, List<Comment> comments) {
+        Caption = caption;
+        this.date_created = date_created;
+        this.image_path = image_path;
+        this.photo_id = photo_id;
+        this.user_id = user_id;
+        this.tags = tags;
+        this.likes = likes;
+        this.comments = comments;
+    }
+
     protected Photo(Parcel in) {
         Caption = in.readString();
         date_created = in.readString();
@@ -37,39 +50,6 @@ public class Photo implements Parcelable {
             return new Photo[size];
         }
     };
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public Photo(String caption, String date_created, String image_path,
-                 String photo_id, String user_id, String tags, List<Like> likes, List<Comment> comments) {
-        Caption = caption;
-        this.date_created = date_created;
-        this.image_path = image_path;
-        this.photo_id = photo_id;
-        this.user_id = user_id;
-        this.tags = tags;
-        this.likes = likes;
-        this.comments = comments;
-    }
-
-    @Override
-    public String toString() {
-        return "Photo{" +
-                "Caption='" + Caption + '\'' +
-                ", date_created='" + date_created + '\'' +
-                ", image_path='" + image_path + '\'' +
-                ", photo_id='" + photo_id + '\'' +
-                ", user_id='" + user_id + '\'' +
-                ", tags='" + tags + '\'' +
-                ", likes=" + likes +
-                '}';
-    }
 
     public String getCaption() {
         return Caption;
@@ -125,6 +105,14 @@ public class Photo implements Parcelable {
 
     public void setLikes(List<Like> likes) {
         this.likes = likes;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

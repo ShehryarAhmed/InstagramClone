@@ -19,8 +19,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.tx.instagram.Login.LoginActivity;
 import com.example.tx.instagram.R;
+import com.example.tx.instagram.model.Comment;
 import com.example.tx.instagram.model.Like;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
@@ -189,8 +189,18 @@ public class ProfileFragment extends Fragment{
                     photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
                     photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());
                     photo.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
-                    photo.setUser_id(objectMap.get(getString(R.string.filed_user_id)).toString());
+                    photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
                     photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
+                    List<Comment> mComments = new ArrayList<Comment>();
+                    for (DataSnapshot dsnapshot : singleSnapshot.child(getString(R.string.field_comments)).getChildren()){
+                        Comment comment  = new Comment();
+                        comment.setUser_id(dsnapshot.getValue(Comment.class).getUser_id());
+                        comment.setComment(dsnapshot.getValue(Comment.class).getComment());
+                        comment.setDate_created(dsnapshot.getValue(Comment.class).getDate_created());
+                        mComments.add(comment);
+                    }
+                    photo.setComments(mComments);
 
                     List<Like> likesList = new ArrayList<Like>();
                     for (DataSnapshot dsnapshot : singleSnapshot.child(getString(R.string.field_likes)).getChildren()){
@@ -199,6 +209,7 @@ public class ProfileFragment extends Fragment{
                         likesList.add(like);
                     }
                     photo.setLikes(likesList);
+
                     photos.add(photo);
 
                 }
