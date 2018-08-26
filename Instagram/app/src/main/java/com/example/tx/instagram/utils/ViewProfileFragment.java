@@ -72,6 +72,8 @@ public class ViewProfileFragment extends Fragment {
     private TextView mUserName;
     private TextView mWebsite;
     private TextView mDescription;
+    private TextView mFollow;
+    private TextView mUnFollow;
     private ImageView mProfileMenu;
     private ProgressBar mProgressBar;
     private CircleImageView mProfilePhoto;
@@ -98,6 +100,9 @@ public class ViewProfileFragment extends Fragment {
         mPosts = (TextView) view.findViewById(R.id.tvPosts);
         mFollower = (TextView) view.findViewById(R.id.tvFollowers);
         mFollowing = (TextView) view.findViewById(R.id.tvFollowing);
+        mFollow= (TextView) view.findViewById(R.id.follow);
+        mUnFollow = (TextView) view.findViewById(R.id.unfollow);
+
         mProgressBar = (ProgressBar) view.findViewById(R.id.profile_progressBar);
         gridView = (GridView) view.findViewById(R.id.gridView);
         mProfileMenu = (ImageView) view.findViewById(R.id.profile_menu);
@@ -105,21 +110,21 @@ public class ViewProfileFragment extends Fragment {
 
         editProfileTv = (TextView) view.findViewById(R.id.textEditProfile);
 
-//        editProfileTv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(TAG, "onClick: edit profile activity");
-//                Intent intent = new Intent(getActivity(),AccountSettingActivity.class);
-//                intent.putExtra(getString(R.string.calling_activity),getString(R.string.profile_fragment));
-//                startActivity(intent);
-//                getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-//
-//            }
-//        });
-
         mContext = getActivity();
         firebaseMethod = new FirebaseMethod(mContext);
         Log.d(TAG, "onCreateView: started");
+
+        editProfileTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: edit profile activity");
+                Intent intent = new Intent(getActivity(),AccountSettingActivity.class);
+                intent.putExtra(getString(R.string.calling_activity),getString(R.string.profile_fragment));
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+
+            }
+        });
 
         try {
             mUser = getUserFromBundle();
@@ -133,11 +138,61 @@ public class ViewProfileFragment extends Fragment {
         setupToolbar();
 
         setUpFirebaseAuth();
+
+        mFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: now following : "+mUser.getUsername());
+
+                FirebaseDatabase.getInstance().getReference()
+                        .child(getString(R.string.dbname_following))
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child(mUser.getUser_id())
+                        .child(getString(R.string.field_user_id))
+                        .setValue(mUser.getUser_id());
+
+                FirebaseDatabase.getInstance().getReference()
+                        .child(getString(R.string.dbname_followers))
+                        .child(mUser.getUser_id())
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child(getString(R.string.field_user_id))
+                        .setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                setFollowing();
+            }
+        });
+
+        mUnFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: now un follow : "+mUser.getUsername());
+
+            }
+        });
 //        setupGridView();
 
         return view;
     }
+    private void setFollowing(){
+        Log.d(TAG, "setFollowing: followin and unfollow");
+        mFollow.setVisibility(View.GONE);
+        mUnFollow.setVisibility(View.VISIBLE);
+        editProfileTv.setVisibility(View.GONE);
+    }
 
+    private void setUnFollowing(){
+        Log.d(TAG, "setFollowing: unfollowing  and unfollow");
+        mFollow.setVisibility(View.VISIBLE);
+        mUnFollow.setVisibility(View.GONE);
+        editProfileTv.setVisibility(View.GONE);
+    }
+
+    private void setCurrentUserProfile(){
+        Log.d(TAG, "setFollowing: ui for showing user");
+        mFollow.setVisibility(View.GONE);
+        mUnFollow.setVisibility(View.GONE);
+        editProfileTv.setVisibility(View.VISIBLE);
+    }
     private void init() {
 
         //set the profile widgets

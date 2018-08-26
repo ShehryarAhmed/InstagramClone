@@ -11,6 +11,8 @@
 
     //Firebase database node name
     <string name="dbname_user">users</string>
+    <string name="dbname_following">fllwoing</string>
+    <string name="dbname_followers">users</string>
     <string name="dbname_user_account_setting">users_account_settings</string>
     <string name="filed_username">username</string>
     <string name="filed_email">email</string>
