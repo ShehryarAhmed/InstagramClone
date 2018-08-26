@@ -132,6 +132,9 @@ public class SearchingActivity extends AppCompatActivity {
                 //navigate to profile activity
                 Intent intent = new Intent(SearchingActivity.this, ProfileActivity.class);
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.serach_activity));
+                intent.putExtra(getString(R.string.intent_user), mUserList.get(position));
+                startActivity(intent);
+
             }
         });
     }
