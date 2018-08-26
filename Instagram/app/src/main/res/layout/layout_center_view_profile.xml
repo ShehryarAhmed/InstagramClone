@@ -45,7 +45,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp">
 
-                    <include layout="@layout/snippet_top_profile"></include>
+                    <include layout="@layout/snippet_top_view_profile"></include>
                 </RelativeLayout>
             </LinearLayout>
             

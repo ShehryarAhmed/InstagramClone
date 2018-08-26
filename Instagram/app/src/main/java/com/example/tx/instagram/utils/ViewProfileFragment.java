@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tx.instagram.Profile.AccountSettingActivity;
 import com.example.tx.instagram.Profile.ProfileActivity;
@@ -45,9 +46,9 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewProfileFragment extends Fragment{
+public class ViewProfileFragment extends Fragment {
 
-    public interface OnGridImageSelectedListner{
+    public interface OnGridImageSelectedListner {
         void onGridImageSelected(Photo photo, int activityNumber);
     }
 
@@ -73,19 +74,21 @@ public class ViewProfileFragment extends Fragment{
     private TextView mDescription;
     private ImageView mProfileMenu;
     private ProgressBar mProgressBar;
-    private CircleImageView  mProfilePhoto;
+    private CircleImageView mProfilePhoto;
     private GridView gridView;
     private Toolbar toolbar;
     private BottomNavigationViewEx bottomNavigationViewEx;
     private Context mContext;
     private TextView editProfileTv;
 
+    //var
+    private User mUser;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_profile, container, false);
 
         mDisplayName = (TextView) view.findViewById(R.id.display_name);
         mUserName = (TextView) view.findViewById(R.id.username);
@@ -102,85 +105,73 @@ public class ViewProfileFragment extends Fragment{
 
         editProfileTv = (TextView) view.findViewById(R.id.textEditProfile);
 
-        editProfileTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: edit profile activity");
-                Intent intent = new Intent(getActivity(),AccountSettingActivity.class);
-                intent.putExtra(getString(R.string.calling_activity),getString(R.string.profile_fragment));
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-
-            }
-        });
+//        editProfileTv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d(TAG, "onClick: edit profile activity");
+//                Intent intent = new Intent(getActivity(),AccountSettingActivity.class);
+//                intent.putExtra(getString(R.string.calling_activity),getString(R.string.profile_fragment));
+//                startActivity(intent);
+//                getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+//
+//            }
+//        });
 
         mContext = getActivity();
         firebaseMethod = new FirebaseMethod(mContext);
         Log.d(TAG, "onCreateView: started");
 
+        try {
+            mUser = getUserFromBundle();
+            init();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onCreateView: NullPointerException " + e.getMessage());
+            Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_SHORT).show();
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
         setUpBottomNavigationView();
         setupToolbar();
 
         setUpFirebaseAuth();
-        setupGridView();
+//        setupGridView();
 
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        try{
-            mOnGridImageSelectedListner = (OnGridImageSelectedListner) getActivity();
-        }catch (ClassCastException e){
-            Log.e(TAG, "onAttach: ClassCastException "+e.getMessage() );
-        }
+    private void init() {
 
-        super.onAttach(context);
-
-    }
-
-    /**
-     * Bottom navigation
-     */
-    private void setUpBottomNavigationView(){
-
-        Log.d(TAG, "setUpBottomNavigationView: ");
-        BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
-        BottomNavigationViewHelper.enableNavigation(mContext,getActivity(),bottomNavigationViewEx);
-
-        Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
-        menuItem.setChecked(true);
-    }
-
-    private void setupToolbar(){
-
-        ((ProfileActivity)getActivity()).setSupportActionBar(toolbar);
-        mProfileMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating too account setting");
-                startActivity(new Intent(mContext,AccountSettingActivity.class));
-                getActivity().overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-            }
-        });
-    }
-
-    private void setupGridView(){
-        Log.d(TAG, "setupGridView: Setting up image grid");
-
-        final ArrayList<Photo> photos = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        Query query = reference
-                .child(getString(R.string.dbname_user_photos))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        //set the profile widgets
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
+        Query query1 = reference1.child(getString(R.string.dbname_user_account_setting))
+                .orderByChild(getString(R.string.field_user_id)).equalTo(mUser.getUser_id());
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: found user " + singleSnapshot.getValue(UserAccountSetting.class).toString());
+                    UserSettings settings = new UserSettings();
+                    settings.setUser(mUser);
+                    settings.setUserAccountSetting(singleSnapshot.getValue(UserAccountSetting.class));
+                    setProfileWidgets(settings);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        //get the users profile photo
+        final ArrayList<Photo> photos = new ArrayList<>();
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
+        Query query2 = reference2
+                .child(getString(R.string.dbname_user_photos))
+                .child(mUser.getUser_id());
+
+        query2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
 //                     photos.add(singleSnapshot.getValue(Photo.class));
-                Photo photo = new Photo();
+                    Photo photo = new Photo();
                     Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
 
                     photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
@@ -191,8 +182,8 @@ public class ViewProfileFragment extends Fragment{
                     photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
 
                     List<Comment> mComments = new ArrayList<Comment>();
-                    for (DataSnapshot dsnapshot : singleSnapshot.child(getString(R.string.field_comments)).getChildren()){
-                        Comment comment  = new Comment();
+                    for (DataSnapshot dsnapshot : singleSnapshot.child(getString(R.string.field_comments)).getChildren()) {
+                        Comment comment = new Comment();
                         comment.setUser_id(dsnapshot.getValue(Comment.class).getUser_id());
                         comment.setComment(dsnapshot.getValue(Comment.class).getComment());
                         comment.setDate_created(dsnapshot.getValue(Comment.class).getDate_created());
@@ -201,58 +192,111 @@ public class ViewProfileFragment extends Fragment{
                     photo.setComments(mComments);
 
                     List<Like> likesList = new ArrayList<Like>();
-                    for (DataSnapshot dsnapshot : singleSnapshot.child(getString(R.string.field_likes)).getChildren()){
-                        Like like  = new Like();
+                    for (DataSnapshot dsnapshot : singleSnapshot.child(getString(R.string.field_likes)).getChildren()) {
+                        Like like = new Like();
                         like.setUser_id(dsnapshot.getValue(Like.class).getUser_id());
                         likesList.add(like);
                     }
                     photo.setLikes(likesList);
 
                     photos.add(photo);
-
                 }
-
-                //setup our image grid
-                int gridWidth = getResources().getDisplayMetrics().widthPixels;
-                int imageWidth = gridWidth/NUM_COLUMN_GRID;
-                gridView.setColumnWidth(imageWidth);
-
-                ArrayList<String> imgUrls = new ArrayList<String>();
-                for (int i = 0; i<photos.size(); i++){
-                    imgUrls.add(photos.get(i).getImage_path());
-                }
-                GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview,"",imgUrls);
-                gridView.setAdapter(adapter);
-
-                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        mOnGridImageSelectedListner.onGridImageSelected(photos.get(i), ACTIVITY_NUM);
-                    }
-                });
+                setupImageGrid(photos);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, "onCancelled: Query cancelled");
             }
         });
     }
+    private void setupImageGrid(final ArrayList<Photo> photos) {
 
-    private void setProfileWidgets(UserSettings userSettings){
+        //setup our image grid
+        int gridWidth = getResources().getDisplayMetrics().widthPixels;
+        int imageWidth = gridWidth / NUM_COLUMN_GRID;
+        gridView.setColumnWidth(imageWidth);
+
+        ArrayList<String> imgUrls = new ArrayList<String>();
+        for (int i = 0; i < photos.size(); i++) {
+            imgUrls.add(photos.get(i).getImage_path());
+        }
+        GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, "", imgUrls);
+        gridView.setAdapter(adapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mOnGridImageSelectedListner.onGridImageSelected(photos.get(i), ACTIVITY_NUM);
+            }
+        });
+    }
+
+    private User getUserFromBundle() {
+        Log.d(TAG, "getUserFromBundle: arguments : " + getArguments());
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            return bundle.getParcelable(getString(R.string.intent_user));
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        try {
+            mOnGridImageSelectedListner = (OnGridImageSelectedListner) getActivity();
+
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: ClassCastException " + e.getMessage());
+        }
+
+        super.onAttach(context);
+
+    }
+
+    /**
+     * Bottom navigation
+     */
+    private void setUpBottomNavigationView() {
+
+        Log.d(TAG, "setUpBottomNavigationView: ");
+        BottomNavigationViewHelper.setUpBottomNavigation(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mContext, getActivity(), bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+    }
+
+    private void setupToolbar() {
+
+        ((ProfileActivity) getActivity()).setSupportActionBar(toolbar);
+        mProfileMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating too account setting");
+                startActivity(new Intent(mContext, AccountSettingActivity.class));
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+    }
+
+
+    private void setProfileWidgets(UserSettings userSettings) {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database ");
         User user = userSettings.getUser();
         UserAccountSetting setting = userSettings.getUserAccountSetting();
 
-        UniversalImageLoader.setImage(setting.getProfile_photo(), mProfilePhoto, null,"");
+        UniversalImageLoader.setImage(setting.getProfile_photo(), mProfilePhoto, null, "");
 
         mDisplayName.setText(setting.getDisplay_name());
         mUserName.setText(setting.getUsername());
         mWebsite.setText(setting.getWebsite());
         mDescription.setText(setting.getDescription());
-        mPosts.setText(""+setting.getPosts());
-        mFollowing.setText(""+setting.getFollowing());
-        mFollower.setText(""+setting.getFollowers());
+        mPosts.setText("" + setting.getPosts());
+        mFollowing.setText("" + setting.getFollowing());
+        mFollower.setText("" + setting.getFollowers());
 
         mProgressBar.setVisibility(View.GONE);
     }
@@ -260,42 +304,29 @@ public class ViewProfileFragment extends Fragment{
     /*
      ***********************************************Firebase******************************************************
      */
+
     /**
      * setup Firebase auth object
      */
 
-    private void setUpFirebaseAuth(){
+    private void setUpFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDBRef = FirebaseDatabase.getInstance();
         mRef = mFirebaseDBRef.getReference();
-        mAuthListner =  new FirebaseAuth.AuthStateListener() {
+        mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 //check if user is logged in
-                if(user != null){
-                    Log.d(TAG, "onAuthStateChanged: "+user.getUid());
-                }
-                else{
+                if (user != null) {
+                    Log.d(TAG, "onAuthStateChanged: " + user.getUid());
+                } else {
                     Log.d(TAG, "signout: ");
                 }
             }
         };
-        mRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                //retrieve user information from database
-                setProfileWidgets(firebaseMethod.getUserSettings(dataSnapshot));
-                //retrieve image  from database
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-        });
 
     }
 
@@ -309,9 +340,9 @@ public class ViewProfileFragment extends Fragment{
     @Override
     public void onStop() {
         super.onStop();
-        if(mAuthListner != null){
+        if (mAuthListner != null) {
             mAuth.removeAuthStateListener(mAuthListner);
         }
     }
 
-    }
+}

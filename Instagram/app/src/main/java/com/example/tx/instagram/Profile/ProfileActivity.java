@@ -15,6 +15,7 @@ import com.example.tx.instagram.R;
 import com.example.tx.instagram.utils.ViewCommentsFragment;
 import com.example.tx.instagram.utils.ViewPostFragment;
 import com.example.tx.instagram.model.Photo;
+import com.example.tx.instagram.utils.ViewProfileFragment;
 
 public class ProfileActivity extends AppCompatActivity implements
         ProfileFragment.OnGridImageSelectedListner,
@@ -61,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity implements
         if(intent.hasExtra(getString(R.string.calling_activity))){
             Log.d(TAG, "init: searching for user object attached as intent extra ");
             if (intent.hasExtra(getString(R.string.intent_user))){
-                ProfileFragment fragment = new ProfileFragment();
+                ViewProfileFragment fragment = new ViewProfileFragment();
                 Bundle args = new Bundle();
                 args.putParcelable(getString(R.string.intent_user),intent.getParcelableExtra(getString(R.string.intent_user)));
                 fragment.setArguments(args);

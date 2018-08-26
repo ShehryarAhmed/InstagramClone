@@ -18,7 +18,7 @@
             android:layout_below="@+id/rellayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-            <include layout="@layout/layout_center_profile"/>
+            <include layout="@layout/layout_center_view_profile"/>
 
         </RelativeLayout>
 
