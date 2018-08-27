@@ -89,6 +89,7 @@ public class ViewPostFragment extends Fragment {
     private Boolean mLikedByCurrentUser;
     private StringBuilder mUsers;
     private String mLikesString = "";
+    private User mCurrentUser;
 
     public interface OnCommentThreadSelectedListner{
         void onCommentThreadSelectedListner(Photo photo);
@@ -144,7 +145,7 @@ public class ViewPostFragment extends Fragment {
                                 }
                                 String[] splitUser = mUsers.toString().split(",");
 
-                                if (mUsers.toString().contains(mUserAccountSettings.getUsername()+",")){
+                                if (mUsers.toString().contains(mCurrentUser.getUsername()+ ",")){
                                     mLikedByCurrentUser = true;
                                 }else{
                                      mLikedByCurrentUser = false;
@@ -384,6 +385,10 @@ public class ViewPostFragment extends Fragment {
         heart = new Heart(mHeartWhite,mHeartRed);
         mGestureDetector = new GestureDetector(getActivity(), new Gesturelistenier());
 
+
+    }
+
+    private void init(){
         try {
 //            mPhoto = getPhotoFromBundle();
 
@@ -421,8 +426,9 @@ public class ViewPostFragment extends Fragment {
                         newPhoto.setComments(commentList);
 
                         mPhoto = newPhoto;
+                        getCurrentUser();
                         getPhotoDetails();
-                        getLikeString();
+
 
                     }
                 }
@@ -435,6 +441,14 @@ public class ViewPostFragment extends Fragment {
 
         } catch (NullPointerException e) {
             Log.e(TAG, "onCreateView: Null pointer Exception:" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isAdded()){
+            init();
         }
     }
 
@@ -552,6 +566,28 @@ public class ViewPostFragment extends Fragment {
      * setup Firebase auth object
      */
 
+    private void getCurrentUser(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                 .child(getString(R.string.dbname_user_account_setting))
+                .orderByChild(getString(R.string.field_user_id))
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    mCurrentUser = singleSnapshot.getValue(User.class);
+                }
+                getLikeString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: Query cancelled");
+            }
+        });
+    }
     private void setUpFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDBRef = FirebaseDatabase.getInstance();

@@ -19,7 +19,8 @@ import com.example.tx.instagram.utils.ViewProfileFragment;
 
 public class ProfileActivity extends AppCompatActivity implements
         ProfileFragment.OnGridImageSelectedListner,
-        ViewPostFragment.OnCommentThreadSelectedListner{
+        ViewPostFragment.OnCommentThreadSelectedListner,
+        ViewProfileFragment.OnGridImageSelectedListner{
 
 
     @Override
