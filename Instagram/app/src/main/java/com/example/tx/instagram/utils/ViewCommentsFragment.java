@@ -299,13 +299,13 @@ public class ViewCommentsFragment extends Fragment {
 
         //insert into user_photos node
         mRef.child(getString(R.string.dbname_user_photos))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(mPhoto.getUser_id())
                 .child(mPhoto.getPhoto_id())
                 .child(getString(R.string.field_comments))
                 .child(commentID)
                 .setValue(comment);
-
     }
+
     private String getTimestamp(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 //        sdf.setTimeZone(TimeZone.getTimeZone("As/Pacific"));
