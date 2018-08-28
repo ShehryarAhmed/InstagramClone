@@ -1,0 +1,117 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <!-- **************middle Section************ -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rellayout1"
+            android:id="@+id/rellayout2"
+            android:background="@color/white">
+
+
+            <LinearLayout
+                android:id="@+id/linLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_photo"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerVertical="true"
+                        app:civ_border_color="@color/black"
+                        app:civ_border_width="0.5dp"
+
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    <include layout="@layout/snippet_top_view_profile"></include>
+                </RelativeLayout>
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/linLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/linLayout"
+                android:padding="15dp"
+                android:background="@drawable/white_gray_boader_bottom">
+
+                <TextView
+                    android:id="@+id/display_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shehryar Ahmed"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    />
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I live in Pakistan"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+
+                    />
+                <TextView
+                    android:id="@+id/website"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="https://www.google.com"
+                    android:textColor="@color/link_blue"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp"
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/rellayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_below="@+id/linLayout2"
+                android:background="@drawable/white_gray_boader_bottom"
+                >
+
+                <GridView
+                    android:id="@+id/gridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numColumns="3"
+                    android:verticalSpacing="1dp"
+                    android:stretchMode="columnWidth"
+                    android:horizontalSpacing="1dp"
+                    >
+
+                </GridView>
+            </RelativeLayout>
+            
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</merge>

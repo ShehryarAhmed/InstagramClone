@@ -42,7 +42,11 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
 
     public CommentListAdapter(@NonNull Context context, @LayoutRes int resource, List<Comment> objects) {
         super(context, resource, objects);
+
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         mContext = context;
         layoutResource = resource;
     }
@@ -64,7 +68,7 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         if(convertView == null){
             convertView = mInflater.inflate(layoutResource, parent, false);
             holder = new ViewHolder();
-            holder.comment = (TextView) convertView.findViewById(R.id.comment);
+            holder.comment = (TextView) convertView.findViewById(R.id.tv_comment);
             holder.username = (TextView) convertView.findViewById(R.id.comment_username);
             holder.timestamp = (TextView) convertView.findViewById(R.id.comment_time_posted);
             holder.reply = (TextView) convertView.findViewById(R.id.comment_reply);
@@ -81,8 +85,8 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         holder.comment.setText(getItem(position).getComment());
         //set the timestamp difference
         String timeStampDiff = getTimeStampDifference(getItem(position));
-        if (timeStampDiff.equals("0")){
-            holder.timestamp.setText("0");
+        if (!timeStampDiff.equals("0")){
+            holder.timestamp.setText(timeStampDiff + " d");
         }else{
             holder.timestamp.setText("today");
         }
@@ -90,7 +94,7 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference
                 .child(mContext.getString(R.string.dbname_user_account_setting))
-                .orderByChild(mContext.getString(R.string.filed_user_id))
+                .orderByChild(mContext.getString(R.string.field_user_id))
                 .equalTo(getItem(position).getUser_id());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

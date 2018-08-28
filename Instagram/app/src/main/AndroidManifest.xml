@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Search.SearchingActivity" />
+        <activity android:name=".Search.SearchingActivity" android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Like.LikeActivity" />
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Login.RegisterActivity" />

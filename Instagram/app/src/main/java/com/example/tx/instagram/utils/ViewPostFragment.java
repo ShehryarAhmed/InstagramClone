@@ -13,21 +13,15 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.tx.instagram.Profile.AccountSettingActivity;
 import com.example.tx.instagram.R;
+import com.example.tx.instagram.model.Comment;
 import com.example.tx.instagram.model.Like;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
 import com.example.tx.instagram.model.UserAccountSetting;
-import com.example.tx.instagram.utils.BottomNavigationViewHelper;
-import com.example.tx.instagram.utils.FirebaseMethod;
-import com.example.tx.instagram.utils.GridImageAdapter;
-import com.example.tx.instagram.utils.SquareImageView;
-import com.example.tx.instagram.utils.UniversalImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +37,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class ViewPostFragment extends Fragment {
@@ -64,6 +60,7 @@ public class ViewPostFragment extends Fragment {
     private TextView mUsername;
     private TextView mTimeStamp;
     private TextView mLikes;
+    private TextView mComments;
 
     private ImageView mbackArrow;
     private ImageView mEllipsee;
@@ -71,6 +68,8 @@ public class ViewPostFragment extends Fragment {
     private ImageView mHeartWhite;
     private ImageView mCommentBubble;
     private ImageView mProfileImage;
+    private ImageView mComment;
+
 
     //firebase
     private FirebaseAuth mAuth;
@@ -90,6 +89,7 @@ public class ViewPostFragment extends Fragment {
     private Boolean mLikedByCurrentUser;
     private StringBuilder mUsers;
     private String mLikesString = "";
+    private User mCurrentUser;
 
     public interface OnCommentThreadSelectedListner{
         void onCommentThreadSelectedListner(Photo photo);
@@ -131,7 +131,7 @@ public class ViewPostFragment extends Fragment {
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
                     Query query = reference
                             .child(getString(R.string.dbname_user))
-                            .orderByChild(getString(R.string.filed_user_id))
+                            .orderByChild(getString(R.string.field_user_id))
                             .equalTo(singleSnapShot.getValue(Like.class).getUser_id());
 
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -145,7 +145,7 @@ public class ViewPostFragment extends Fragment {
                                 }
                                 String[] splitUser = mUsers.toString().split(",");
 
-                                if (mUsers.toString().contains(mUserAccountSettings.getUsername()+",")){
+                                if (mUsers.toString().contains(mCurrentUser.getUsername()+ ",")){
                                     mLikedByCurrentUser = true;
                                 }else{
                                      mLikedByCurrentUser = false;
@@ -299,7 +299,7 @@ public class ViewPostFragment extends Fragment {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference
                 .child(getString(R.string.dbname_user_account_setting))
-                .orderByChild(getString(R.string.filed_user_id))
+                .orderByChild(getString(R.string.field_user_id))
                 .equalTo(mPhoto.getUser_id());
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -380,18 +380,75 @@ public class ViewPostFragment extends Fragment {
         mUsername = (TextView) view.findViewById(R.id.username);
         mTimeStamp = (TextView) view.findViewById(R.id.image_time_posted);
         mLikes = (TextView) view.findViewById(R.id.image_likes);
+        mComments = (TextView) view.findViewById(R.id.image_comment_link);
 
         heart = new Heart(mHeartWhite,mHeartRed);
         mGestureDetector = new GestureDetector(getActivity(), new Gesturelistenier());
 
+
+    }
+
+    private void init(){
         try {
-            mPhoto = getPhotoFromBundle();
-            UniversalImageLoader.setImage(mPhoto.getImage_path(), mPostImage, null, "");
+//            mPhoto = getPhotoFromBundle();
+
+            UniversalImageLoader.setImage(getPhotoFromBundle().getImage_path(), mPostImage, null, "");
             mActivityNumber = getActivityNumBundle();
-            getPhotoDetails();
-            getLikeString();
+            String photo_id = getPhotoFromBundle().getPhoto_id();
+
+            Query query = FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.dbname_photos))
+                    .orderByChild(getString(R.string.field_photo_id))
+                    .equalTo(photo_id);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                        Photo newPhoto = new Photo();
+                        Map<String, Object> objectMap = (HashMap<String,Object>) singleSnapshot.getValue();
+
+                        newPhoto.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+                        newPhoto.setTags(objectMap.get(getString(R.string.field_tags)).toString());
+                        newPhoto.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
+                        newPhoto.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
+                        newPhoto.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
+                        newPhoto.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
+                        List<Comment> commentList = new ArrayList<>();
+                        for (DataSnapshot dSnapshot : singleSnapshot
+                                .child(getString(R.string.field_comments)).getChildren()){
+                            Comment comment = new Comment();
+                            comment.setUser_id(dSnapshot.getValue(Comment.class).getUser_id());
+                            comment.setComment(dSnapshot.getValue(Comment.class).getComment());
+                            comment.setDate_created(dSnapshot.getValue(Comment.class).getDate_created());
+                            commentList.add(comment);
+                        }
+                        newPhoto.setComments(commentList);
+
+                        mPhoto = newPhoto;
+                        getCurrentUser();
+                        getPhotoDetails();
+
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         } catch (NullPointerException e) {
             Log.e(TAG, "onCreateView: Null pointer Exception:" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(isAdded()){
+            init();
         }
     }
 
@@ -446,6 +503,20 @@ public class ViewPostFragment extends Fragment {
         mLikes.setText(mLikesString);
         mCaption.setText(mPhoto.getCaption());
 
+        if(mPhoto.getComments().size() > 0 ){
+            mComments.setText("View all "+mPhoto.getComments().size() +" comments"  );
+        }else{
+            mComments.setText("");
+        }
+
+        mComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigate to comments thread");
+                mOnCThreadSelectedListner.onCommentThreadSelectedListner(mPhoto);
+            }
+        });
+
         mbackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -495,6 +566,28 @@ public class ViewPostFragment extends Fragment {
      * setup Firebase auth object
      */
 
+    private void getCurrentUser(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                 .child(getString(R.string.dbname_user_account_setting))
+                .orderByChild(getString(R.string.field_user_id))
+                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    mCurrentUser = singleSnapshot.getValue(User.class);
+                }
+                getLikeString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: Query cancelled");
+            }
+        });
+    }
     private void setUpFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDBRef = FirebaseDatabase.getInstance();

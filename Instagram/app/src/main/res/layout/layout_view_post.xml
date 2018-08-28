@@ -124,7 +124,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/black"/>
                 <TextView
-                    android:id="@+id/image_comment"
+                    android:id="@+id/image_comment_link"
                     android:layout_below="@+id/image_captions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                     android:layout_marginTop="15dp"/>
                 <TextView
                     android:id="@+id/image_time_posted"
-                    android:layout_below="@+id/image_comment"
+                    android:layout_below="@+id/image_comment_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3 days ago "

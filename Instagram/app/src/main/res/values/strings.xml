@@ -11,6 +11,8 @@
 
     //Firebase database node name
     <string name="dbname_user">users</string>
+    <string name="dbname_following">follwoing</string>
+    <string name="dbname_followers">followers</string>
     <string name="dbname_user_account_setting">users_account_settings</string>
     <string name="filed_username">username</string>
     <string name="filed_email">email</string>
@@ -20,7 +22,7 @@
     <string name="filed_phone_number">phone_number</string>
     <string name="dbname_photos">photos</string>
     <string name="dbname_user_photos">user_photos</string>
-    <string name="filed_user_id">user_id</string>
+    <string name="field_user_id">user_id</string>
     <string name="field_likes">likes</string>
     <string name="field_caption">caption</string>
     <string name="field_date_created">date_created</string>
@@ -31,16 +33,19 @@
 
     //Fragment name
     <string name="profile_fragment">Profile_Fragment</string>
+    <string name="view_profile_fragment">ViewProfile</string>
     //Intent Extras
     <string name="calling_activity">calling_activity</string>
     <string name="selected_image">selected_image</string>
     <string name="selected_bitmap">selected_bitmap</string>
     <string name="return_to_fragment">return_to_fragment</string>
+    <string name="intent_user">intent_user</string>
 
 
 
     //Activity name
     <string name="profile_activity">Profile Activity</string>
+    <string name="serach_activity">Search Activity</string>
 
     <!--Strings -->
     <string name="gallery">GALLERY</string>
@@ -55,5 +60,7 @@
     <!-- Bundle arg name -->
     <string name="activity_number">alling_activity</string>
     <string name="view_comments_fragement">View Comments</string>
+    <string name="field_comments">comments</string>
+
 
 </resources>
