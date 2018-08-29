@@ -17,9 +17,12 @@ import android.view.MenuItem;
 
 import com.example.tx.instagram.Login.LoginActivity;
 import com.example.tx.instagram.R;
+import com.example.tx.instagram.model.Photo;
+import com.example.tx.instagram.model.UserAccountSetting;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.example.tx.instagram.utils.SectionPagerAdapter;
 import com.example.tx.instagram.utils.UniversalImageLoader;
+import com.example.tx.instagram.utils.ViewCommentsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -48,6 +51,14 @@ public class HomeActivity extends AppCompatActivity {
         setUpViewPager();
     }
 
+    public void onCommentThreadSelected(Photo photo, UserAccountSetting settings){
+        Log.d(TAG, "onCommentThreadSelected: selected a comment thread");
+
+        ViewCommentsFragment fragment = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.bundle_photo),photo);
+        args.putParcelable(getString(R.string.bundle_user_account_settings),settings);
+    }
     private void initImageLoader(){
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
