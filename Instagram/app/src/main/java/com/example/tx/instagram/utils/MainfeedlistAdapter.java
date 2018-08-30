@@ -1,6 +1,7 @@
 package com.example.tx.instagram.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.gesture.GestureLibraries;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.model.ByteArrayLoader;
 import com.example.tx.instagram.Home.HomeActivity;
+import com.example.tx.instagram.Profile.ProfileActivity;
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Comment;
 import com.example.tx.instagram.model.Like;
@@ -29,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,11 +53,11 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
     private String currentUsername;
 
     public MainfeedlistAdapter(@NonNull Context context, int resource, List<Photo> objects) {
-
         super(context, resource);
         mInfalter = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLayoutResource = resource;
         this.mContext = context;
+        mReference = FirebaseDatabase.getInstance().getReference();
     }
 
     static class ViewHolder{
@@ -115,9 +118,102 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: loading comment thread for "+getItem(position).getPhoto_id() );
-                ((HomeActivity)mContext)
+                ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),holder.setting);
+
+                //going to need to do something else?
             }
         });
+        //set the time it was posted
+        String timeStampDifference = getTimeStampDifference(getItem(position));
+        if(!timeStampDifference.equals("0")){
+            holder.timeDetail.setText(timeStampDifference + " DAYS AGO");
+        }else{
+            holder.timeDetail.setText("Today");
+        }
+        //set the profile image
+        final ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.displayImage(getItem(position).getImage_path(), holder.image);
+
+        ///get the profile image and username
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                .child(mContext.getString(R.string.dbname_user_account_setting))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(getItem(position).getUser_id());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (final DataSnapshot singleSnapShot : dataSnapshot.getChildren()) {
+//                    currentUsername = singleSnapShot.getValue(UserAccountSetting.class).getUsername();
+                    Log.d(TAG, "onDataChange: found user : "
+                            + singleSnapShot.getValue(UserAccountSetting.class).getUsername());
+                    holder.username.setText(singleSnapShot.getValue(UserAccountSetting.class).getUsername());
+                    holder.username.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d(TAG, "onClick: navigating to profile of : "+ holder.user.getUsername());
+                            Intent intent = new Intent(mContext, ProfileActivity.class);
+                            intent.putExtra(mContext.getString(R.string.calling_activity),
+                                    mContext.getString(R.string.home_activity));
+                            intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
+                            mContext.startActivity(intent);
+
+                        }
+                    });
+                    imageLoader.displayImage(singleSnapShot.getValue(UserAccountSetting.class).getProfile_photo(),
+                            holder.mProfileImageView);
+                    holder.mProfileImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d(TAG, "onClick: navigating to profile of : "+ holder.user.getUsername());
+                            Intent intent = new Intent(mContext, ProfileActivity.class);
+                            intent.putExtra(mContext.getString(R.string.calling_activity),
+                                    mContext.getString(R.string.home_activity));
+                            intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
+                            mContext.startActivity(intent);
+
+                        }
+                    });
+                    holder.setting = singleSnapShot.getValue(UserAccountSetting.class);
+                    holder.comment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),holder.setting);
+
+                            //another thing?
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        //get user object
+        Query userQuery = mReference
+                .child(mContext.getString(R.string.dbname_user))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(getItem(position).getUser_id());
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: found user : "+
+                            singleSnapshot.getValue(User.class).getUsername());
+
+                    holder.user = singleSnapshot.getValue(User.class);
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         return convertView;
     }
 

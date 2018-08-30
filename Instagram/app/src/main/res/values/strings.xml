@@ -46,6 +46,7 @@
     //Activity name
     <string name="profile_activity">Profile Activity</string>
     <string name="serach_activity">Search Activity</string>
+    <string name="home_activity">Home Activity</string>
 
     <!--Strings -->
     <string name="gallery">GALLERY</string>

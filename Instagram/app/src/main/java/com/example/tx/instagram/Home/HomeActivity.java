@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,6 +59,12 @@ public class HomeActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         args.putParcelable(getString(R.string.bundle_photo),photo);
         args.putParcelable(getString(R.string.bundle_user_account_settings),settings);
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container,fragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragement));
+        transaction.commit();
     }
     private void initImageLoader(){
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
