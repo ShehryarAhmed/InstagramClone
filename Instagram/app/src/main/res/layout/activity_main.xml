@@ -7,10 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".Home.HomeActivity">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
+
+    </FrameLayout>
+    <RelativeLayout
+        android:id="@+id/relLayoutParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- top toolbar-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

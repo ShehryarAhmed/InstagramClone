@@ -66,8 +66,11 @@ public class HomeFragment extends Fragment {
                     singleSnapShot.child(getString(R.string.field_user_id)).getValue();
                     mFollowing.add(singleSnapShot.child(getString(R.string.field_user_id)).getValue().toString());
                 }
+                mFollowing.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
                 //get photos
                 getPhotos();
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

@@ -119,6 +119,8 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
 
         //get likes string
         getLikesString(holder);
+        //set the caption
+        holder.caption.setText(getItem(position).getCaption());
 
         //set the comment
         List<Comment> comments = getItem(position).getComments();
@@ -127,9 +129,11 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: loading comment thread for " + getItem(position).getPhoto_id());
-                ((HomeActivity)mContext).onCommentThreadSelected(getItem(position), holder.settings);
+                ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),
+                        mContext.getString(R.string.home_activity));
 
                 //going to need to do something else?
+                ((HomeActivity)mContext).hideLayout();
             }
         });
 
@@ -196,12 +200,14 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
 
 
                     holder.settings = singleSnapshot.getValue(UserAccountSettings.class);
-                    holder.comment.setOnClickListener(new View.OnClickListener() {
+                    holder.comments.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((HomeActivity)mContext).onCommentThreadSelected(getItem(position), holder.settings);
+                            ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),
+                                    mContext.getString(R.string.home_activity));
 
                             //another thing?
+                            ((HomeActivity)mContext).hideLayout();
                         }
                     });
                 }
@@ -395,7 +401,7 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
 
                                 String[] splitUsers = holder.users.toString().split(",");
 
-                                if(holder.users.toString().contains(holder.user.getUsername() + ",")){//mitch, mitchell.tabian
+                                if(holder.users.toString().contains(currentUsername + ",")){//mitch, mitchell.tabian
                                     holder.likeByCurrentUser = true;
                                 }else{
                                     holder.likeByCurrentUser = false;
@@ -496,8 +502,8 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
 
         String difference = "";
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.CANADA);
-        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));//google 'android list of timezones'
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Karachi"));//google 'android list of timezones'
         Date today = c.getTime();
         sdf.format(today);
         Date timestamp;
@@ -506,10 +512,12 @@ public class MainfeedlistAdapter extends ArrayAdapter<Photo> {
             timestamp = sdf.parse(photoTimestamp);
             difference = String.valueOf(Math.round(((today.getTime() - timestamp.getTime()) / 1000 / 60 / 60 / 24 )));
         }catch (ParseException e){
-            Log.e(TAG, "getTimestampDifference: ParseException: " + e.getMessage() );
+            Log.e(TAG, "getTimestampDifference: ParseException: " + e);
             difference = "0";
         }
         return difference;
     }
+
+
 
 }
