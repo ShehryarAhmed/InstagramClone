@@ -18,14 +18,13 @@ import com.example.tx.instagram.R;
 import com.example.tx.instagram.Share.ShareActivity;
 import com.example.tx.instagram.dialogs.ConfirmPassworodDialog;
 import com.example.tx.instagram.model.User;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.example.tx.instagram.model.UserSettings;
 import com.example.tx.instagram.utils.FirebaseMethod;
 import com.example.tx.instagram.utils.UniversalImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -185,19 +184,19 @@ public class EditProfileFragment extends Fragment implements ConfirmPassworodDia
                 /**
                  * Change the rest of the settings that do not required uniqueness
                  */
-                if(!mUserSetting.getUserAccountSetting().getDisplay_name().equals(displayname)){
+                if(!mUserSetting.getUserAccountSettings().getDisplay_name().equals(displayname)){
                     //update display name
                     firebaseMethod.updateUserAccountSettings(displayname, null, null,0);
                 }
-                if(!mUserSetting.getUserAccountSetting().getWebsite().equals(website)){
+                if(!mUserSetting.getUserAccountSettings().getWebsite().equals(website)){
                     //update display website
                     firebaseMethod.updateUserAccountSettings(null, null, website,0);
                 }
-                if(!mUserSetting.getUserAccountSetting().getDescription().equals(description)){
+                if(!mUserSetting.getUserAccountSettings().getDescription().equals(description)){
                     //update display description
                     firebaseMethod.updateUserAccountSettings(null, description, null,0);
                 }
-                if(!mUserSetting.getUserAccountSetting().getProfile_photo().equals(phoneNumber)){
+                if(!mUserSetting.getUserAccountSettings().getProfile_photo().equals(phoneNumber)){
                     //update display phoneNumber
                     firebaseMethod.updateUserAccountSettings(displayname, null, null,phoneNumber);
                 }
@@ -253,10 +252,10 @@ public class EditProfileFragment extends Fragment implements ConfirmPassworodDia
 
     private void setProfileWidgets(UserSettings userSettings) {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database :" + userSettings.toString());
-        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database :" + userSettings.getUserAccountSetting().getDisplay_name());
+        Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database :" + userSettings.getUserAccountSettings().getDisplay_name());
 
         mUserSetting = userSettings;
-        UserAccountSetting settings = userSettings.getUserAccountSetting();
+        UserAccountSettings settings = userSettings.getUserAccountSettings();
 
         UniversalImageLoader.setImage(settings.getProfile_photo(), mProfilePhoto, null, "");
 

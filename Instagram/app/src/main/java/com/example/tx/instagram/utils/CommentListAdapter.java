@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Comment;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -100,11 +100,11 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    holder.username.setText(singleSnapshot.getValue(UserAccountSetting.class).getUsername());
+                    holder.username.setText(singleSnapshot.getValue(UserAccountSettings.class).getUsername());
 
                     ImageLoader imageLoader = ImageLoader.getInstance();
 
-                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountSetting.class).getProfile_photo(),holder.profileImage);
+                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),holder.profileImage);
                 }
             }
 

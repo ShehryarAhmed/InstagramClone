@@ -24,7 +24,7 @@ import com.example.tx.instagram.model.Comment;
 import com.example.tx.instagram.model.Like;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.example.tx.instagram.model.UserSettings;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.example.tx.instagram.utils.FirebaseMethod;
@@ -252,7 +252,7 @@ public class ProfileFragment extends Fragment{
     private void setProfileWidgets(UserSettings userSettings){
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database ");
         User user = userSettings.getUser();
-        UserAccountSetting setting = userSettings.getUserAccountSetting();
+        UserAccountSettings setting = userSettings.getUserAccountSettings();
 
         UniversalImageLoader.setImage(setting.getProfile_photo(), mProfilePhoto, null,"");
 

@@ -12,9 +12,7 @@ import android.widget.ListView;
 
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Comment;
-import com.example.tx.instagram.model.Like;
 import com.example.tx.instagram.model.Photo;
-import com.example.tx.instagram.model.UserAccountSetting;
 import com.example.tx.instagram.utils.MainfeedlistAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +23,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -46,7 +43,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home,container,false);
-        mListView = (ListView) view.findViewById(R.id.listView);
+        mListView = (ListView) view.findViewById(R.id.home_listview);
         mFollowing =  new ArrayList<>();
         mPhotos =  new ArrayList<>();
         getFollowing();

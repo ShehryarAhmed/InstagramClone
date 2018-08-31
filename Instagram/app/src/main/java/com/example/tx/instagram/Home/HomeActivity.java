@@ -2,16 +2,12 @@ package com.example.tx.instagram.Home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +15,7 @@ import android.view.MenuItem;
 import com.example.tx.instagram.Login.LoginActivity;
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Photo;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
 import com.example.tx.instagram.utils.SectionPagerAdapter;
 import com.example.tx.instagram.utils.UniversalImageLoader;
@@ -28,9 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -52,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         setUpViewPager();
     }
 
-    public void onCommentThreadSelected(Photo photo, UserAccountSetting settings){
+    public void onCommentThreadSelected(Photo photo, UserAccountSettings settings){
         Log.d(TAG, "onCommentThreadSelected: selected a comment thread");
 
         ViewCommentsFragment fragment = new ViewCommentsFragment();

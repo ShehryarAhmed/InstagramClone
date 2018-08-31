@@ -21,7 +21,7 @@ import com.example.tx.instagram.model.Comment;
 import com.example.tx.instagram.model.Like;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -83,7 +83,7 @@ public class ViewPostFragment extends Fragment {
     private int mActivityNumber = 0;
     private String photoUsername;
     private String mPhotoUrl;
-    private UserAccountSetting mUserAccountSettings;
+    private UserAccountSettings mUserAccountSettings;
     private GestureDetector mGestureDetector;
     private Heart heart;
     private Boolean mLikedByCurrentUser;
@@ -306,7 +306,7 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    mUserAccountSettings = singleSnapshot.getValue(UserAccountSetting.class);
+                    mUserAccountSettings = singleSnapshot.getValue(UserAccountSettings.class);
                 }
 //                setupWidgets();
             }
@@ -376,7 +376,7 @@ public class ViewPostFragment extends Fragment {
         mProfileImage = (ImageView) view.findViewById(R.id.profile_photo);
 
         mbackLabel = (TextView) view.findViewById(R.id.tvBackLabel);
-        mCaption = (TextView) view.findViewById(R.id.image_captions);
+        mCaption = (TextView) view.findViewById(R.id.image_caption);
         mUsername = (TextView) view.findViewById(R.id.username);
         mTimeStamp = (TextView) view.findViewById(R.id.image_time_posted);
         mLikes = (TextView) view.findViewById(R.id.image_likes);

@@ -3,7 +3,6 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.User;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -87,11 +86,11 @@ public class UserListAdapter extends ArrayAdapter<User>{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
                     Log.d(TAG, "onDataChange: found user: " +
-                            singleSnapshot.getValue(UserAccountSetting.class).toString());
+                            singleSnapshot.getValue(UserAccountSettings.class).toString());
 
                     ImageLoader imageLoader = ImageLoader.getInstance();
 
-                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountSetting.class).getProfile_photo(),
+                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
                             holder.profileImage);
                 }
             }

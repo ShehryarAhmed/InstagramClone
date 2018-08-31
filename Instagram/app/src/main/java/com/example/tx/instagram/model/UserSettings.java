@@ -3,14 +3,14 @@ package com.example.tx.instagram.model;
 public class UserSettings {
 
     private User user;
-    private UserAccountSetting userAccountSetting;
+    private UserAccountSettings userAccountSettings;
 
     public UserSettings() {
     }
 
-    public UserSettings(User user, UserAccountSetting userAccountSetting) {
+    public UserSettings(User user, UserAccountSettings userAccountSettings) {
         this.user = user;
-        this.userAccountSetting = userAccountSetting;
+        this.userAccountSettings = userAccountSettings;
     }
 
     public User getUser() {
@@ -21,11 +21,11 @@ public class UserSettings {
         this.user = user;
     }
 
-    public UserAccountSetting getUserAccountSetting() {
-        return userAccountSetting;
+    public UserAccountSettings getUserAccountSettings() {
+        return userAccountSettings;
     }
 
-    public void setUserAccountSetting(UserAccountSetting userAccountSetting) {
-        this.userAccountSetting = userAccountSetting;
+    public void setUserAccountSettings(UserAccountSettings userAccountSettings) {
+        this.userAccountSettings = userAccountSettings;
     }
 }

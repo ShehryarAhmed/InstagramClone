@@ -21,13 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tx.instagram.Profile.AccountSettingActivity;
-import com.example.tx.instagram.Profile.ProfileActivity;
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Comment;
 import com.example.tx.instagram.model.Like;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.example.tx.instagram.model.UserSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -208,7 +207,7 @@ public class ViewProfileFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                    Log.d(TAG, "onDataChange: found user : "+singleSnapshot.getValue(UserAccountSetting.class).toString());
+                    Log.d(TAG, "onDataChange: found user : "+singleSnapshot.getValue(UserAccountSettings.class).toString());
                     setFollowing();
                 }
             }
@@ -312,10 +311,10 @@ public class ViewProfileFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "onDataChange: found user " + singleSnapshot.getValue(UserAccountSetting.class).toString());
+                    Log.d(TAG, "onDataChange: found user " + singleSnapshot.getValue(UserAccountSettings.class).toString());
                     UserSettings settings = new UserSettings();
                     settings.setUser(mUser);
-                    settings.setUserAccountSetting(singleSnapshot.getValue(UserAccountSetting.class));
+                    settings.setUserAccountSettings(singleSnapshot.getValue(UserAccountSettings.class));
                     setProfileWidgets(settings);
                 }
             }
@@ -450,7 +449,7 @@ public class ViewProfileFragment extends Fragment {
     private void setProfileWidgets(UserSettings userSettings) {
         Log.d(TAG, "setProfileWidgets: setting widgets with data retrieving from firebase database ");
         User user = userSettings.getUser();
-        UserAccountSetting setting = userSettings.getUserAccountSetting();
+        UserAccountSettings setting = userSettings.getUserAccountSettings();
 
         UniversalImageLoader.setImage(setting.getProfile_photo(), mProfilePhoto, null, "");
 

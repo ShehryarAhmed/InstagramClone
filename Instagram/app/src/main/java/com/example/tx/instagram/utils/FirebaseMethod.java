@@ -13,7 +13,7 @@ import com.example.tx.instagram.Profile.AccountSettingActivity;
 import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.User;
-import com.example.tx.instagram.model.UserAccountSetting;
+import com.example.tx.instagram.model.UserAccountSettings;
 import com.example.tx.instagram.model.UserSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,7 +32,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class FirebaseMethod {
@@ -282,7 +281,7 @@ public class FirebaseMethod {
 
         mRef.child(mContext.getString(R.string.dbname_user)).child(userId).setValue(user);
 
-        UserAccountSetting userAccountSetting = new UserAccountSetting(
+        UserAccountSettings userAccountSettings = new UserAccountSettings(
                 description,
                 username,
                 0,
@@ -293,7 +292,7 @@ public class FirebaseMethod {
                 website,
                 userId);
 
-        mRef.child(mContext.getString(R.string.dbname_user_account_setting)).child(userId).setValue(userAccountSetting  );
+        mRef.child(mContext.getString(R.string.dbname_user_account_setting)).child(userId).setValue(userAccountSettings);
 
     }
 
@@ -316,65 +315,65 @@ public class FirebaseMethod {
     }
 
     public UserSettings getUserSettings(DataSnapshot dataSnapshot) {
-        Log.d(TAG, "getUserAccountSetting: reterieving user account setting firebase.");
+        Log.d(TAG, "getUserAccountSettings: reterieving user account setting firebase.");
 
-        UserAccountSetting settings = new UserAccountSetting();
+        UserAccountSettings settings = new UserAccountSettings();
         User user = new User();
 
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             // user account settings node
             if (ds.getKey().equals(mContext.getString(R.string.dbname_user_account_setting))) {
-                Log.d(TAG, "getUserAccountSetting: datasnapshot : " + ds);
+                Log.d(TAG, "getUserAccountSettings: datasnapshot : " + ds);
 
                 try {
 
                     settings.setDisplay_name(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getDisplay_name()
                     );
                     settings.setUsername(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getUsername()
                     );
                     settings.setWebsite(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getWebsite()
                     );
                     settings.setDescription(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getDescription()
                     );
                     settings.setProfile_photo(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getProfile_photo()
                     );
                     settings.setPosts(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getPosts()
                     );
                     settings.setFollowing(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getFollowing()
                     );
                     settings.setFollowers(
                             ds.child(userId)
-                                    .getValue(UserAccountSetting.class)
+                                    .getValue(UserAccountSettings.class)
                                     .getFollowers()
                     );
                 } catch (NullPointerException e) {
-                    Log.d(TAG, "getUserAccountSetting: NullPointerException " + e.getMessage());
+                    Log.d(TAG, "getUserAccountSettings: NullPointerException " + e.getMessage());
                 }
             }
                 // user node
                 if (ds.getKey().equals(mContext.getString(R.string.dbname_user))) {
-                    Log.d(TAG, "getUserAccountSetting: datasnapshot : " + ds);
+                    Log.d(TAG, "getUserAccountSettings: datasnapshot : " + ds);
 
                     user.setUsername(
                             ds.child(userId)
@@ -397,7 +396,7 @@ public class FirebaseMethod {
                                     .getUser_id()
                     );
 
-                    Log.d(TAG, "getUserAccountSetting: retried users information : " + toString());
+                    Log.d(TAG, "getUserAccountSettings: retried users information : " + toString());
                 }
 
 
