@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
     //vars
     private ArrayList<Photo> mPhotos;
+//    private ArrayList<Photo> mPhotos;
     private ArrayList<String> mFollowing;
     private ListView mListView;
     private MainfeedlistAdapter mAdapter;
