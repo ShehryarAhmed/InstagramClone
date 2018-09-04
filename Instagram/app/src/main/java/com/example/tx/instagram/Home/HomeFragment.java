@@ -34,10 +34,11 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
     //vars
     private ArrayList<Photo> mPhotos;
-//    private ArrayList<Photo> mPhotos;
+    private ArrayList<Photo> mPaginatedPhotos;
     private ArrayList<String> mFollowing;
     private ListView mListView;
     private MainfeedlistAdapter mAdapter;
+    private int mResults;
 
     @Nullable
     @Override
@@ -138,15 +139,67 @@ public class HomeFragment extends Fragment {
 
     }
     private void displayPhotos(){
+
+        mPaginatedPhotos = new ArrayList<>();
+
         if(mPhotos != null){
-            Collections.sort(mPhotos, new Comparator<Photo>() {
-                @Override
-                public int compare(Photo photo, Photo t1) {
-                    return t1.getDate_created().compareTo(photo.getDate_created());
+
+            try{
+                Collections.sort(mPhotos, new Comparator<Photo>() {
+                    @Override
+                    public int compare(Photo photo, Photo t1) {
+                        return t1.getDate_created().compareTo(photo.getDate_created());
+                    }
+                });
+
+                int iterations = mPhotos.size();
+
+                if(iterations > 10){
+                    iterations = 10;
                 }
-            });
-            mAdapter = new MainfeedlistAdapter(getActivity(),R.layout.layout_mainfeed_listitem, mPhotos );
-            mListView.setAdapter(mAdapter);
+
+                mResults = 0;
+                for(int i = 0; i < iterations; i++){
+                    mPaginatedPhotos.add(mPhotos.get(i));
+                }
+
+                mAdapter = new MainfeedlistAdapter(getActivity(),R.layout.layout_mainfeed_listitem, mPhotos );
+                mListView.setAdapter(mAdapter);
+
+            }catch (NullPointerException e){
+                Log.e(TAG, "displayPhotos: NullPointerException"+e.getMessage() );
+            }catch (IndexOutOfBoundsException e){
+                Log.e(TAG, "displayPhotos: IndexOutOfBoundsException"+e.getMessage());
+            }
+
+
+        }
+    }
+
+    public void displayMorePhotos(){
+        Log.d(TAG, "displayMorePhotos: displaying more photos");
+        try{
+
+            if(mPhotos.size() > mResults && mPhotos.size() >  0){
+                int iterations;
+                if(mPhotos.size() >  (mResults + 1)){
+                    Log.d(TAG, "displayMorePhotos: there are greater than 10 more photos");
+                    iterations = 10;
+                }else{
+                    Log.d(TAG, "displayMorePhotos: there is less than 10 photos");
+                    iterations = mPhotos.size() - mResults;
+                }
+
+                //add the new photos to the paginated results
+                for (int i = mResults; i < mResults +iterations; i++){
+                    mPaginatedPhotos.add(mPhotos.get(i));
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        }catch (NullPointerException e){
+            Log.e(TAG, "displayPhotos: NullPointerException"+e.getMessage() );
+        }catch (IndexOutOfBoundsException e){
+            Log.e(TAG, "displayPhotos: IndexOutOfBoundsException"+e.getMessage());
         }
     }
 }

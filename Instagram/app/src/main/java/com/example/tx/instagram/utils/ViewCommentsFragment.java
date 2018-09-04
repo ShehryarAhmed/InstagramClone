@@ -112,15 +112,17 @@ public class ViewCommentsFragment extends Fragment {
         mBackArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                Log.d(TAG, "onClick: navigating back");
+//                getActivity().getSupportFragmentManager().popBackStack();
+//
                 Log.d(TAG, "onClick: navigating back");
                 if(getCallingActivityFromBundle().equals(getString(R.string.home_activity))){
                     getActivity().getSupportFragmentManager().popBackStack();
                     ((HomeActivity)getActivity()).showLayout();
                 }else{
                     getActivity().getSupportFragmentManager().popBackStack();
-
                 }
-
             }
         });
     }

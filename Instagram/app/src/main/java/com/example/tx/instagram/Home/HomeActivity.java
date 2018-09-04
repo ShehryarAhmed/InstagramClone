@@ -20,6 +20,7 @@ import com.example.tx.instagram.R;
 import com.example.tx.instagram.model.Photo;
 import com.example.tx.instagram.model.UserAccountSettings;
 import com.example.tx.instagram.utils.BottomNavigationViewHelper;
+import com.example.tx.instagram.utils.MainfeedlistAdapter;
 import com.example.tx.instagram.utils.SectionPagerAdapter;
 import com.example.tx.instagram.utils.UniversalImageLoader;
 import com.example.tx.instagram.utils.ViewCommentsFragment;
@@ -28,9 +29,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements MainfeedlistAdapter.OnLoadMoreItemsListener{
 
-    private static final String TAG = "HomeActivity";
+    @Override
+    public void onLoadMoreItems() {
+        Log.d(TAG, "onLoadMoreItems: displaying more item");
+
+        HomeFragment fragment = (HomeFragment)getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:"+R.id.viewpager_container +":"+mViewPager.getCurrentItem());
+
+        if(fragment != null){
+            fragment.displayMorePhotos();
+        }
+    }
+
+    private static final String TAG = "HomeActivitimey";
     public static final int ACTIVITY_NUM = 0;
     public static final int HOME_FRAGMENT = 1;
     private Context mContext = HomeActivity.this;
@@ -59,17 +72,18 @@ public class HomeActivity extends AppCompatActivity {
     public void onCommentThreadSelected(Photo photo, String callingActivity){
         Log.d(TAG, "onCommentThreadSelected: selected a comment thread");
 
-        ViewCommentsFragment fragment = new ViewCommentsFragment();
+
+        ViewCommentsFragment fragment  = new ViewCommentsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(getString(R.string.photo),photo);
-        args.putString(getString(R.string.photo),getString(R.string.photo));
-//        args.putParcelable(getString(R.string.bundle_user_account_settings),settings);
+        args.putParcelable(getString(R.string.photo), photo);
+        args.putString(getString(R.string.home_activity), getString(R.string.home_activity));
         fragment.setArguments(args);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container,fragment);
+        transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(getString(R.string.view_comments_fragement));
         transaction.commit();
+
     }
     private void initImageLoader(){
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
@@ -175,4 +189,6 @@ public class HomeActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListner);
         }
     }
+
+
 }
