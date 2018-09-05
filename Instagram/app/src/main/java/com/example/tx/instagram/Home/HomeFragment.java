@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
                     iterations = 10;
                 }
 
-                mResults = 0;
+                mResults = 10;
                 for(int i = 0; i < iterations; i++){
                     mPaginatedPhotos.add(mPhotos.get(i));
                 }
@@ -194,6 +194,7 @@ public class HomeFragment extends Fragment {
                 for (int i = mResults; i < mResults +iterations; i++){
                     mPaginatedPhotos.add(mPhotos.get(i));
                 }
+                mResults = mResults + iterations;
                 mAdapter.notifyDataSetChanged();
             }
         }catch (NullPointerException e){
